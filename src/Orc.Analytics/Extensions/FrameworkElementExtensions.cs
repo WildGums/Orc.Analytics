@@ -9,7 +9,6 @@ namespace Orc.Analytics
     using System.Windows;
     using Catel;
     using Catel.IoC;
-    using Services;
 
     public static partial class FrameworkElementExtensions
     {

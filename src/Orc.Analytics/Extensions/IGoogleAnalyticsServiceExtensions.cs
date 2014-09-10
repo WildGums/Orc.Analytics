@@ -10,7 +10,6 @@ namespace Orc.Analytics
     using System;
     using System.Threading.Tasks;
     using Catel;
-    using Services;
 
     public static class IGoogleAnalyticsServiceExtensions
     {

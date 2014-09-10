@@ -5,18 +5,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.Analytics.Services
+namespace Orc.Analytics
 {
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
     using Auditors;
+    using Catel;
     using Catel.Logging;
     using Catel.Reflection;
     using GoogleAnalytics.Core;
 
     public class GoogleAnalyticsService : IGoogleAnalyticsService
     {
+        private readonly IUserIdService _userIdService;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly AnalyticsAuditor _analyticsAuditor;
@@ -27,8 +29,11 @@ namespace Orc.Analytics.Services
         private string _appName;
         private string _appVersion;
 
-        public GoogleAnalyticsService()
+        public GoogleAnalyticsService(IUserIdService userIdService)
         {
+            Argument.IsNotNull(() => userIdService);
+
+            _userIdService = userIdService;
             _analyticsAuditor = new AnalyticsAuditor(this);
 
             var entryAssembly = AssemblyHelper.GetEntryAssembly();
@@ -136,7 +141,7 @@ namespace Orc.Analytics.Services
         {
             if (_tracker == null)
             {
-                InitializeTracker();
+                await InitializeTracker();
             }
 
             if (_tracker == null)
@@ -148,12 +153,19 @@ namespace Orc.Analytics.Services
             await Task.Factory.StartNew(action);
         }
 
-        private void InitializeTracker()
+        private async Task InitializeTracker()
         {
             if (string.IsNullOrWhiteSpace(AccountId))
             {
                 Log.Warning("Account Id is null or whitespace, cannot create tracker");
                 return;
+            }
+
+            if (string.IsNullOrWhiteSpace(UserId))
+            {
+                Log.Debug("User Id is null or whitespace, using the IUserIdService to retrieve the user id");
+
+                _userId = await _userIdService.GetUserId();
             }
 
             var resolution = new Dimensions((int) System.Windows.SystemParameters.PrimaryScreenWidth,

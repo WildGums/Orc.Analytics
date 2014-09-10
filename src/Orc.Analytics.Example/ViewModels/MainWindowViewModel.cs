@@ -8,6 +8,7 @@
 namespace Orc.Analytics.Example.ViewModels
 {
     using System.Threading.Tasks;
+    using Catel;
     using Catel.Logging;
     using Catel.MVVM;
 
@@ -16,15 +17,20 @@ namespace Orc.Analytics.Example.ViewModels
     /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly IGoogleAnalyticsService _googleAnalyticsService;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
-        public MainWindowViewModel()
+        public MainWindowViewModel(IGoogleAnalyticsService googleAnalyticsService)
         {
+            Argument.IsNotNull(() => googleAnalyticsService);
 
+            _googleAnalyticsService = googleAnalyticsService;
+
+            AccountId = "UA-54670241-1";
         }
         #endregion
 
@@ -37,6 +43,8 @@ namespace Orc.Analytics.Example.ViewModels
         {
             get { return "Orc.Analytics.Example"; }
         }
+
+        public string AccountId { get; set; }
         #endregion
 
         #region Commands
@@ -44,14 +52,9 @@ namespace Orc.Analytics.Example.ViewModels
         #endregion
 
         #region Methods
-        protected override void Initialize()
+        private void OnAccountIdChanged()
         {
-            base.Initialize();
-        }
-
-        protected override Task Close()
-        {
-            return base.Close();
+            _googleAnalyticsService.AccountId = AccountId;
         }
         #endregion
     }

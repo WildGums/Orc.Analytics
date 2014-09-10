@@ -12,7 +12,6 @@ namespace Orc.Analytics.Auditors
     using Catel;
     using Catel.MVVM;
     using Catel.MVVM.Auditing;
-    using Services;
 
     public class AnalyticsAuditor : AuditorBase
     {

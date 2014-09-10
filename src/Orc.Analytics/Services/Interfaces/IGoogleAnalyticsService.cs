@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-namespace Orc.Analytics.Services
+namespace Orc.Analytics
 {
     using System;
     using System.Threading.Tasks;
@@ -14,6 +14,10 @@ namespace Orc.Analytics.Services
     {
         #region Properties
         bool IsEnabled { get; set; }
+        string AccountId { get; set; }
+        string UserId { get; set; }
+        string AppName { get; set; }
+        string AppVersion { get; set; }
         #endregion
 
         #region Methods
