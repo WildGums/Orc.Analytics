@@ -25,6 +25,8 @@
     
     <dependencies>
       <dependency id="Catel.Core" version="[replaced]" />
+      <dependency id="Microsoft.Bcl" version="[replaced]" />
+      <dependency id="GoogleAnalyticsSDK" version="[replaced]" />
     </dependencies>
   </metadata>
 </package>
