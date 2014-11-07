@@ -8,6 +8,7 @@
 namespace Orc.Analytics
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Globalization;
     using System.Threading.Tasks;
     using Auditors;
@@ -18,10 +19,15 @@ namespace Orc.Analytics
 
     public class GoogleAnalyticsService : IGoogleAnalyticsService
     {
-        private readonly IUserIdService _userIdService;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
+        // ReSharper disable once NotAccessedField.Local
         private readonly AnalyticsAuditor _analyticsAuditor;
+        private readonly IUserIdService _userIdService;
+
+        private readonly ConcurrentQueue<Action> _queue = new ConcurrentQueue<Action>();
+
+        private bool _isTrackerInitialized;
 
         private Tracker _tracker;
         private string _accountId;
@@ -49,7 +55,8 @@ namespace Orc.Analytics
             set
             {
                 _accountId = value;
-                _tracker = null;
+
+                Tracker = null;
             }
         }
 
@@ -59,7 +66,8 @@ namespace Orc.Analytics
             set
             {
                 _userId = value;
-                _tracker = null;
+
+                Tracker = null;
             }
         }
 
@@ -69,7 +77,8 @@ namespace Orc.Analytics
             set
             {
                 _appName = value;
-                _tracker = null;
+
+                Tracker = null;
             }
         }
 
@@ -79,7 +88,22 @@ namespace Orc.Analytics
             set
             {
                 _appVersion = value;
-                _tracker = null;
+
+                Tracker = null;
+            }
+        }
+
+        private Tracker Tracker
+        {
+            get { return _tracker; }
+            set
+            {
+                _tracker = value;
+
+                if (_tracker == null)
+                {
+                    _isTrackerInitialized = false;
+                }
             }
         }
 
@@ -92,9 +116,12 @@ namespace Orc.Analytics
                 return;
             }
 
-            Log.Debug("Tracking view: {0}", viewName);
+            await Invoke(() =>
+            {
+                Log.Debug("Tracking view: {0}", viewName);
 
-            await Invoke(() => _tracker.SendView(viewName));
+                _tracker.SendView(viewName);
+            });
         }
 
         public async Task SendEvent(string category, string action, string label = null, long value = 0)
@@ -104,9 +131,12 @@ namespace Orc.Analytics
                 return;
             }
 
-            Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
+            Invoke(() =>
+            {
+                Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
 
-            Invoke(() => _tracker.SendEvent(category, action, label, value));
+                _tracker.SendEvent(category, action, label, value);
+            });
         }
 
         public async Task SendTransaction(string sku, string name, string transactionId, long costPerProduct, int quantity = 1)
@@ -116,13 +146,16 @@ namespace Orc.Analytics
                 return;
             }
 
-            Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
-
             var transaction = new Transaction(transactionId, costPerProduct * quantity);
             var item = new TransactionItem(sku, name, costPerProduct, quantity);
             transaction.Items.Add(item);
 
-            Invoke(() => _tracker.SendTransaction(transaction));
+            Invoke(() =>
+            {
+                Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
+
+                _tracker.SendTransaction(transaction);
+            });
         }
 
         public async Task SendTiming(TimeSpan time, string category, string variable, string label = "")
@@ -132,29 +165,35 @@ namespace Orc.Analytics
                 return;
             }
 
-            Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
+            Invoke(() =>
+            {
+                Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
 
-            Invoke(() => _tracker.SendTiming(time, category, variable, label));
+                _tracker.SendTiming(time, category, variable, label);
+            });
         }
 
         public async Task Invoke(Action action)
         {
-            if (_tracker == null)
-            {
-                await InitializeTracker();
-            }
+            _queue.Enqueue(action);
 
-            if (_tracker == null)
+            if (!_isTrackerInitialized)
             {
-                Log.Error("No tracker available, cannot submit analytics, see previous warnings for details");
+                _isTrackerInitialized = true;
+
+#pragma warning disable 4014
+                InitializeTracker();
                 return;
+#pragma warning restore 4014
             }
 
-            await Task.Factory.StartNew(action);
+            await Task.Factory.StartNew(() => SendTrackingsFromQueue());
         }
 
         private async Task InitializeTracker()
         {
+            Log.Debug("Initializing tracker");
+
             if (string.IsNullOrWhiteSpace(AccountId))
             {
                 Log.Warning("Account Id is null or whitespace, cannot create tracker");
@@ -168,8 +207,8 @@ namespace Orc.Analytics
                 _userId = await _userIdService.GetUserId();
             }
 
-            var resolution = new Dimensions((int) System.Windows.SystemParameters.PrimaryScreenWidth,
-                (int) System.Windows.SystemParameters.PrimaryScreenHeight);
+            var resolution = new Dimensions((int)System.Windows.SystemParameters.PrimaryScreenWidth,
+                (int)System.Windows.SystemParameters.PrimaryScreenHeight);
 
             var trackerManager = new TrackerManager(new PlatformInfoProvider
             {
@@ -185,6 +224,29 @@ namespace Orc.Analytics
             tracker.AppVersion = AppVersion;
 
             _tracker = tracker;
+
+            Log.Info("Initialized tracker, starting to empty the existing queue now");
+
+            await Task.Factory.StartNew(() => SendTrackingsFromQueue());
+        }
+
+        private async Task SendTrackingsFromQueue()
+        {
+            var tracker = _tracker;
+            if (tracker == null)
+            {
+                Log.Warning("No tracker available, cannot submit analytics. It might be possible the tracker is still initializing.");
+                return;
+            }
+
+            while (_queue.Count > 0)
+            {
+                Action action;
+                if (_queue.TryDequeue(out action))
+                {
+                    action();
+                }
+            }
         }
     }
 }
