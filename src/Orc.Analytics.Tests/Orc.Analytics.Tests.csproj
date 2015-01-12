@@ -16,7 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>8fdb9a01</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>bac1be7c</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,7 +38,7 @@
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0018\lib\net40\Catel.Core.dll</HintPath>
+      <HintPath>..\..\lib\Catel.Core.4.1.0-unstable0045\lib\net40\Catel.Core.dll</HintPath>
     </Reference>
     <Reference Include="GoogleAnalytics.Core">
       <HintPath>..\..\lib\GoogleAnalyticsSDK.1.2.12\lib\portable-net40+win8+wp8+sl5\GoogleAnalytics.Core.dll</HintPath>
@@ -52,8 +52,8 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
       <HintPath>..\..\lib\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\lib\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -139,9 +139,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\lib\Fody.1.26.4\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.26.3-beta0001\build\Fody.targets')" />
+  <Import Project="..\..\lib\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\..\lib\Fody.1.26.4\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
