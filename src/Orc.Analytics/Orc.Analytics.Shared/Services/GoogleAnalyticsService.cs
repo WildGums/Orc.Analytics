@@ -131,7 +131,7 @@ namespace Orc.Analytics
                 return;
             }
 
-            Invoke(() =>
+            await Invoke(() =>
             {
                 Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
 
@@ -150,7 +150,7 @@ namespace Orc.Analytics
             var item = new TransactionItem(sku, name, costPerProduct, quantity);
             transaction.Items.Add(item);
 
-            Invoke(() =>
+            await Invoke(() =>
             {
                 Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
 
@@ -165,7 +165,7 @@ namespace Orc.Analytics
                 return;
             }
 
-            Invoke(() =>
+            await Invoke(() =>
             {
                 Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
 

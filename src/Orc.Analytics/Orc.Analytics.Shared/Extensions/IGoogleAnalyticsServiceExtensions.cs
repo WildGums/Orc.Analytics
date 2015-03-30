@@ -22,7 +22,9 @@ namespace Orc.Analytics
 
             await func();
 
+#pragma warning disable 4014
             service.SendTiming(DateTime.Now.Subtract(startTime), category, variable);
+#pragma warning restore 4014
         }
 
         public static async Task<T> ExecuteAndTrackWithResult<T>(this IGoogleAnalyticsService service, Func<Task<T>> func, string category,
@@ -34,7 +36,9 @@ namespace Orc.Analytics
 
             var result = await func();
 
+#pragma warning disable 4014
             service.SendTiming(DateTime.Now.Subtract(startTime), category, variable);
+#pragma warning restore 4014
 
             return result;
         }

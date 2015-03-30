@@ -167,13 +167,15 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orc.Analytics\Orc.Analytics.csproj">
+    <ProjectReference Include="..\Orc.Analytics\Orc.Analytics.NET40\Orc.Analytics.NET40.csproj">
       <Project>{4258fc75-dd23-4877-a56d-3a077ab57f2d}</Project>
-      <Name>Orc.Analytics</Name>
+      <Name>Orc.Analytics.NET40</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="FodyWeavers.xml" />
+    <Resource Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
