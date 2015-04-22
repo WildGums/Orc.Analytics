@@ -5,7 +5,7 @@ Contributors
 
 ### Get Buyoff Or Find Open Community Issues/Features
 
- * Through [GitHub](https://github.com/WildGums/Orc.Analytics/issues), or through the [Chat Room](https://gitter.im/WildGums.Orc.Analytics) (preferred), you talk about a feature you would like to see (or a bug), and why it should be included.
+ * Through [GitHub](https://github.com/WildGums/Orc.Analytics/issues), or through the [Chat Room](https://gitter.im/WildGums/Orc.Analytics) (preferred), you talk about a feature you would like to see (or a bug), and why it should be included.
    * If approved through the Chat Room, ensure the accompanying issue is created with information and a link back to the Chat Room discussion.
  * Once you get a nod you can start on the feature.
 
