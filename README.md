@@ -1,5 +1,7 @@
 # Orc.Analytics
 
+[![Join the chat at https://gitter.im/WildGums/Orc.Analytics](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WildGums/Orc.Analytics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This library makes it very easy to integration Google Analytics with Catel projects.
 
 ![Google Analytics](doc/images/google_analytics.png)  
