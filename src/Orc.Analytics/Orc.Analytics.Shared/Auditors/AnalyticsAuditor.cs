@@ -53,9 +53,12 @@ namespace Orc.Analytics.Auditors
         {
             base.OnViewModelClosed(viewModel);
 
-            var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
+            if (_viewModelCreationTimes.ContainsKey(viewModel.UniqueIdentifier))
+            {
+                var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
 
-            _analyticsService.SendViewModelClosed(viewModel.GetType().FullName, lifetime);
+                _analyticsService.SendViewModelClosed(viewModel.GetType().FullName, lifetime);
+            }
         }
         #endregion
     }

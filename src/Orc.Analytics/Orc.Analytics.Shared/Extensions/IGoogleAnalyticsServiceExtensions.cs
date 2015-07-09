@@ -47,14 +47,14 @@ namespace Orc.Analytics
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
-            googleAnalytics.SendEvent("ViewModels", "Created", viewModel);
+            googleAnalytics.SendEvent("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
         }
 
         public static void SendViewModelClosed(this IGoogleAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
-            googleAnalytics.SendEvent("ViewModels", "Closed", viewModel);
+            googleAnalytics.SendEvent("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
             googleAnalytics.SendTiming(duration, "ViewModels", viewModel);
         }
 
