@@ -36,9 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catel.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Catel.Core, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Catel.Core.4.1.0\lib\net45\Catel.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Catel.Core.4.2.0-unstable0183\lib\net45\Catel.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="GoogleAnalytics.Core">
       <HintPath>..\..\..\lib\GoogleAnalyticsSDK.1.2.12\lib\portable-net45+win8+wp8\GoogleAnalytics.Core.dll</HintPath>

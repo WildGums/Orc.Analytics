@@ -62,7 +62,19 @@ namespace Orc.Analytics
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
-            googleAnalytics.SendEvent("Commands", string.Format("{0}.{1}", viewModelName, commandName));
+            var eventName = viewModelName;
+            if (!string.IsNullOrEmpty(eventName))
+            {
+                eventName += ".";
+            }
+            else
+            {
+                eventName = string.Empty;
+            }
+
+            eventName += commandName;
+
+            googleAnalytics.SendEvent("Commands", eventName);
         }
     }
 }

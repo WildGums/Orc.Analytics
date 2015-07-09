@@ -22,7 +22,10 @@
         <TextBox Text="{Binding Action}" />
         
         <catel:EmptyCell />
-        <Button Command="{Binding Send}" Content="Submit" />
+        <StackPanel>
+            <Button Command="{Binding Send}" Content="Submit" />
+            <Button Command="{catel:CommandManagerBinding TestCommands.AppWideTest}" Content="App-wide command test" />
+        </StackPanel>
     </catel:StackGrid>
     
 </catel:UserControl>

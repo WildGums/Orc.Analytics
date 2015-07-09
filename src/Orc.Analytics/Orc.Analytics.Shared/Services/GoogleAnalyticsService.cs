@@ -14,6 +14,7 @@ namespace Orc.Analytics
     using Auditors;
     using Catel;
     using Catel.Logging;
+    using Catel.MVVM.Auditing;
     using Catel.Reflection;
     using GoogleAnalytics.Core;
 
@@ -41,6 +42,8 @@ namespace Orc.Analytics
 
             _userIdService = userIdService;
             _analyticsAuditor = new AnalyticsAuditor(this);
+
+            AuditingManager.RegisterAuditor(_analyticsAuditor);
 
             var entryAssembly = AssemblyHelper.GetEntryAssembly();
             AppName = entryAssembly.Product();

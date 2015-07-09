@@ -14,7 +14,7 @@ namespace Orc.Analytics.Example.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml.
     /// </summary>
-    public partial class MainWindow : DataWindow
+    public partial class MainWindow
     {
         #region Constants
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
