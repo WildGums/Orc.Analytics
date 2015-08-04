@@ -13,7 +13,7 @@ namespace Orc.Analytics
 
     public static class IGoogleAnalyticsServiceExtensions
     {
-        public static async Task ExecuteAndTrack(this IGoogleAnalyticsService service, Func<Task> func, string category,
+        public static async Task ExecuteAndTrackAsync(this IGoogleAnalyticsService service, Func<Task> func, string category,
             string variable)
         {
             Argument.IsNotNull("service", service);
@@ -23,11 +23,11 @@ namespace Orc.Analytics
             await func();
 
 #pragma warning disable 4014
-            service.SendTiming(DateTime.Now.Subtract(startTime), category, variable);
+            service.SendTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
 #pragma warning restore 4014
         }
 
-        public static async Task<T> ExecuteAndTrackWithResult<T>(this IGoogleAnalyticsService service, Func<Task<T>> func, string category,
+        public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IGoogleAnalyticsService service, Func<Task<T>> func, string category,
             string variable)
         {
             Argument.IsNotNull("service", service);
@@ -37,28 +37,28 @@ namespace Orc.Analytics
             var result = await func();
 
 #pragma warning disable 4014
-            service.SendTiming(DateTime.Now.Subtract(startTime), category, variable);
+            service.SendTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
 #pragma warning restore 4014
 
             return result;
         }
 
-        public static void SendViewModelCreated(this IGoogleAnalyticsService googleAnalytics, string viewModel)
+        public static Task SendViewModelCreatedAsync(this IGoogleAnalyticsService googleAnalytics, string viewModel)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
-            googleAnalytics.SendEvent("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
+            return googleAnalytics.SendEventAsync("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
         }
 
-        public static void SendViewModelClosed(this IGoogleAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
+        public static async Task SendViewModelClosedAsync(this IGoogleAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
-            googleAnalytics.SendEvent("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
-            googleAnalytics.SendTiming(duration, "ViewModels", viewModel);
+            await googleAnalytics.SendEventAsync("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
+            await googleAnalytics.SendTimingAsync(duration, "ViewModels", viewModel);
         }
 
-        public static void SendCommand(this IGoogleAnalyticsService googleAnalytics, string viewModelName, string commandName)
+        public static Task SendCommandAsync(this IGoogleAnalyticsService googleAnalytics, string viewModelName, string commandName)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
@@ -74,7 +74,7 @@ namespace Orc.Analytics
 
             eventName += commandName;
 
-            googleAnalytics.SendEvent("Commands", eventName);
+            return googleAnalytics.SendEventAsync("Commands", eventName);
         }
     }
 }

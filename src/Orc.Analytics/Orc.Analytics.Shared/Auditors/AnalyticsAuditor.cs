@@ -37,7 +37,7 @@ namespace Orc.Analytics.Auditors
 
             var viewModelName = viewModel != null ? viewModel.GetType().Name : string.Empty;
 
-            _analyticsService.SendCommand(viewModelName, commandName);
+            _analyticsService.SendCommandAsync(viewModelName, commandName);
         }
 
         public override void OnViewModelCreated(IViewModel viewModel)
@@ -46,7 +46,7 @@ namespace Orc.Analytics.Auditors
 
             _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
 
-            _analyticsService.SendViewModelCreated(viewModel.GetType().FullName);
+            _analyticsService.SendViewModelCreatedAsync(viewModel.GetType().FullName);
         }
 
         public override void OnViewModelClosed(IViewModel viewModel)
@@ -57,7 +57,9 @@ namespace Orc.Analytics.Auditors
             {
                 var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
 
-                _analyticsService.SendViewModelClosed(viewModel.GetType().FullName, lifetime);
+#pragma warning disable 4014
+                _analyticsService.SendViewModelClosedAsync(viewModel.GetType().FullName, lifetime);
+#pragma warning restore 4014
             }
         }
         #endregion

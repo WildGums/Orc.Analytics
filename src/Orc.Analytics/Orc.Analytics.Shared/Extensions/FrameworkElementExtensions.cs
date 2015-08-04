@@ -9,16 +9,17 @@ namespace Orc.Analytics
     using System.Windows;
     using Catel;
     using Catel.IoC;
+    using System.Threading.Tasks;
 
     public static partial class FrameworkElementExtensions
     {
         private static readonly IGoogleAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveType<IGoogleAnalyticsService>();
 
-        public static void TrackViewForAnalytics(this FrameworkElement frameworkElement)
+        public static Task TrackViewForAnalyticsAsync(this FrameworkElement frameworkElement)
         {
             Argument.IsNotNull("frameworkElement", frameworkElement);
 
-            AnalyticsService.SendView(frameworkElement.GetType().Name);
+            return AnalyticsService.SendViewAsync(frameworkElement.GetType().Name);
         }
     }
 }

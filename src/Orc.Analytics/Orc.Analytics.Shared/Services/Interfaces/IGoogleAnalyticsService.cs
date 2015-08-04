@@ -21,10 +21,10 @@ namespace Orc.Analytics
         #endregion
 
         #region Methods
-        Task SendView(string viewName);
-        Task SendEvent(string category, string action, string label = null, long value = 0);
-        Task SendTransaction(string sku, string name, string transactionId, long costPerProduct, int quantity = 1);
-        Task SendTiming(TimeSpan time, string category, string variable, string label = "");
+        Task SendViewAsync(string viewName);
+        Task SendEventAsync(string category, string action, string label = null, long value = 0);
+        Task SendTransactionAsync(string sku, string name, string transactionId, long costPerProduct, int quantity = 1);
+        Task SendTimingAsync(TimeSpan time, string category, string variable, string label = "");
         #endregion
     }
 }

@@ -112,14 +112,14 @@ namespace Orc.Analytics
 
         public bool IsEnabled { get; set; }
 
-        public async Task SendView(string viewName)
+        public async Task SendViewAsync(string viewName)
         {
             if (!IsEnabled)
             {
                 return;
             }
 
-            await Invoke(() =>
+            await InvokeAsync(() =>
             {
                 Log.Debug("Tracking view: {0}", viewName);
 
@@ -127,14 +127,14 @@ namespace Orc.Analytics
             });
         }
 
-        public async Task SendEvent(string category, string action, string label = null, long value = 0)
+        public async Task SendEventAsync(string category, string action, string label = null, long value = 0)
         {
             if (!IsEnabled)
             {
                 return;
             }
 
-            await Invoke(() =>
+            await InvokeAsync(() =>
             {
                 Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
 
@@ -142,7 +142,7 @@ namespace Orc.Analytics
             });
         }
 
-        public async Task SendTransaction(string sku, string name, string transactionId, long costPerProduct, int quantity = 1)
+        public async Task SendTransactionAsync(string sku, string name, string transactionId, long costPerProduct, int quantity = 1)
         {
             if (!IsEnabled)
             {
@@ -153,7 +153,7 @@ namespace Orc.Analytics
             var item = new TransactionItem(sku, name, costPerProduct, quantity);
             transaction.Items.Add(item);
 
-            await Invoke(() =>
+            await InvokeAsync(() =>
             {
                 Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
 
@@ -161,14 +161,14 @@ namespace Orc.Analytics
             });
         }
 
-        public async Task SendTiming(TimeSpan time, string category, string variable, string label = "")
+        public async Task SendTimingAsync(TimeSpan time, string category, string variable, string label = "")
         {
             if (!IsEnabled)
             {
                 return;
             }
 
-            await Invoke(() =>
+            await InvokeAsync(() =>
             {
                 Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
 
@@ -176,24 +176,29 @@ namespace Orc.Analytics
             });
         }
 
-        public async Task Invoke(Action action)
+        public async Task InvokeAsync(Action action)
         {
             _queue.Enqueue(action);
 
-            if (!_isTrackerInitialized)
+            // Note: best practice is to never spawn threads in a library, but this is an exception, we really don't want to bother
+            // the end-user by creating a thread every time
+            await Task.Factory.StartNew(() =>
             {
-                _isTrackerInitialized = true;
+                if (!_isTrackerInitialized)
+                {
+                    _isTrackerInitialized = true;
 
 #pragma warning disable 4014
-                InitializeTracker();
-                return;
+                    InitializeTracker();
+                    return;
 #pragma warning restore 4014
-            }
+                }
 
-            await Task.Factory.StartNew(() => SendTrackingsFromQueue());
+                SendTrackingsFromQueue();
+            });
         }
 
-        private async Task InitializeTracker()
+        private void InitializeTracker()
         {
             Log.Debug("Initializing tracker");
 
@@ -207,7 +212,7 @@ namespace Orc.Analytics
             {
                 Log.Debug("User Id is null or whitespace, using the IUserIdService to retrieve the user id");
 
-                _userId = await _userIdService.GetUserId();
+                _userId = _userIdService.GetUserId();
             }
 
             var resolution = new Dimensions((int)System.Windows.SystemParameters.PrimaryScreenWidth,
@@ -230,10 +235,10 @@ namespace Orc.Analytics
 
             Log.Info("Initialized tracker, starting to empty the existing queue now");
 
-            await Task.Factory.StartNew(() => SendTrackingsFromQueue());
+            SendTrackingsFromQueue();
         }
 
-        private async Task SendTrackingsFromQueue()
+        private void SendTrackingsFromQueue()
         {
             var tracker = _tracker;
             if (tracker == null)

@@ -7,14 +7,12 @@
 
 namespace Orc.Analytics
 {
-    using System.Threading.Tasks;
-
     public interface IUserIdService
     {
         /// <summary>
         /// Gets the user identifier.
         /// </summary>
         /// <returns>System.String.</returns>
-        Task<string> GetUserId();
+        string GetUserId();
     }
 }

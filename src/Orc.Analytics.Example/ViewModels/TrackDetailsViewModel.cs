@@ -7,6 +7,7 @@
 
 namespace Orc.Analytics.Example.ViewModels
 {
+    using System.Threading.Tasks;
     using Catel;
     using Catel.MVVM;
 
@@ -23,7 +24,7 @@ namespace Orc.Analytics.Example.ViewModels
 
             _googleAnalyticsService = googleAnalyticsService;
 
-            Send = new Command(OnSendExecute, OnSendCanExecute);
+            Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
 
             Category = "category";
             Action = "action";
@@ -34,7 +35,7 @@ namespace Orc.Analytics.Example.ViewModels
         public string Action { get; set; }
 
         #region Commands
-        public Command Send { get; private set; }
+        public TaskCommand Send { get; private set; }
 
         private bool OnSendCanExecute()
         {
@@ -51,9 +52,9 @@ namespace Orc.Analytics.Example.ViewModels
             return true;
         }
 
-        private async void OnSendExecute()
+        private async Task OnSendExecuteAsync()
         {
-            await _googleAnalyticsService.SendEvent(Category, Action);
+            await _googleAnalyticsService.SendEventAsync(Category, Action);
         }
         #endregion
     }

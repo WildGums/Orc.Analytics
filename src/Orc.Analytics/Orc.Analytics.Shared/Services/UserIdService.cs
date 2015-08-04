@@ -10,7 +10,6 @@ namespace Orc.Analytics
     using System;
     using System.Management;
     using System.Text;
-    using System.Threading.Tasks;
     using Catel.Logging;
 
     public class UserIdService : IUserIdService
@@ -23,29 +22,26 @@ namespace Orc.Analytics
         /// Gets the user identifier.
         /// </summary>
         /// <returns>System.String.</returns>
-        public async Task<string> GetUserId()
+        public string GetUserId()
         {
             if (!string.IsNullOrWhiteSpace(_userId))
             {
                 return _userId;
             }
 
-            return await Task.Factory.StartNew(() =>
-            {
-                Log.Debug("Calculating user id");
+            Log.Debug("Calculating user id");
 
-                var cpuId = GetCpuId();
-                var hddId = GetHddId();
+            var cpuId = GetCpuId();
+            var hddId = GetHddId();
 
-                var uniqueIdPreValue = string.Format("{0}_{1}", cpuId, hddId);
-                var uniqueId = GetMd5Hash(uniqueIdPreValue);
+            var uniqueIdPreValue = string.Format("{0}_{1}", cpuId, hddId);
+            var uniqueId = GetMd5Hash(uniqueIdPreValue);
 
-                Log.Debug("Calculated user id '{0}'", uniqueId);
+            Log.Debug("Calculated user id '{0}'", uniqueId);
 
-                _userId = uniqueId;
+            _userId = uniqueId;
 
-                return uniqueId;
-            });
+            return uniqueId;
         }
 
         private string GetMd5Hash(string value)
