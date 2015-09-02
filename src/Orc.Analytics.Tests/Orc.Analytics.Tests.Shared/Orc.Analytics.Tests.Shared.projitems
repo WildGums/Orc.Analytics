@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d356bec8-19be-4c5e-9a07-4f6a8ae75741</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Orc.Analytics.Tests.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DummyFacts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+</Project>

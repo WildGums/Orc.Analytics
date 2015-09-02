@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics", "Orc.Analytics\Orc.Analytics.csproj", "{4258FC75-DD23-4877-A56D-3A077AB57F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.NET40", "Orc.Analytics\Orc.Analytics.NET40\Orc.Analytics.NET40.csproj", "{4258FC75-DD23-4877-A56D-3A077AB57F2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}"
 EndProject
@@ -21,11 +21,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{1FE0D431-A
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Test", "Orc.Analytics.Test\Orc.Analytics.Test.csproj", "{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Tests.NET40", "Orc.Analytics.Tests\Orc.Analytics.Tests.NET40\Orc.Analytics.Tests.NET40.csproj", "{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Example", "Orc.Analytics.Example\Orc.Analytics.Example.csproj", "{E70E1855-9D61-4063-A209-CA0A150A6F3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B1500163-DD62-4454-AA11-9F1CF313986E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{3FB1DF86-9F58-42CF-97EE-3F3C1F4AAB5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A23951F8-267E-40A7-89B1-B95042F24998}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.Analytics.Shared", "Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.shproj", "{850A9F5C-534A-4C69-BAD5-A82F2F733A6D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.Analytics.Tests.Shared", "Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.shproj", "{D356BEC8-19BE-4C5E-9A07-4F6A8AE75741}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.NET45", "Orc.Analytics\Orc.Analytics.NET45\Orc.Analytics.NET45.csproj", "{F3EC8F09-7800-4274-8E08-912402F8439D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Tests.NET45", "Orc.Analytics.Tests\Orc.Analytics.Tests.NET45\Orc.Analytics.Tests.NET45.csproj", "{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{d356bec8-19be-4c5e-9a07-4f6a8ae75741}*SharedItemsImports = 13
+		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{4258fc75-dd23-4877-a56d-3a077ab57f2d}*SharedItemsImports = 4
+		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{d6415689-67de-4fee-aa72-6d7eedddceb6}*SharedItemsImports = 4
+		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{f3ec8f09-7800-4274-8e08-912402f8439d}*SharedItemsImports = 4
+		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{ff90e6b4-4a91-40ac-9ce4-823ae9a1265f}*SharedItemsImports = 4
+		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{850a9f5c-534a-4c69-bad5-a82f2f733a6d}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -43,13 +65,28 @@ Global
 		{E70E1855-9D61-4063-A209-CA0A150A6F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E70E1855-9D61-4063-A209-CA0A150A6F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E70E1855-9D61-4063-A209-CA0A150A6F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3EC8F09-7800-4274-8E08-912402F8439D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3EC8F09-7800-4274-8E08-912402F8439D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3EC8F09-7800-4274-8E08-912402F8439D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3EC8F09-7800-4274-8E08-912402F8439D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4258FC75-DD23-4877-A56D-3A077AB57F2D} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
-		{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
-		{E70E1855-9D61-4063-A209-CA0A150A6F3E} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
+		{4258FC75-DD23-4877-A56D-3A077AB57F2D} = {B1500163-DD62-4454-AA11-9F1CF313986E}
+		{D6415689-67DE-4FEE-AA72-6D7EEDDDCEB6} = {A23951F8-267E-40A7-89B1-B95042F24998}
+		{E70E1855-9D61-4063-A209-CA0A150A6F3E} = {3FB1DF86-9F58-42CF-97EE-3F3C1F4AAB5B}
+		{B1500163-DD62-4454-AA11-9F1CF313986E} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
+		{3FB1DF86-9F58-42CF-97EE-3F3C1F4AAB5B} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
+		{A23951F8-267E-40A7-89B1-B95042F24998} = {A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}
+		{850A9F5C-534A-4C69-BAD5-A82F2F733A6D} = {B1500163-DD62-4454-AA11-9F1CF313986E}
+		{D356BEC8-19BE-4C5E-9A07-4F6A8AE75741} = {A23951F8-267E-40A7-89B1-B95042F24998}
+		{F3EC8F09-7800-4274-8E08-912402F8439D} = {B1500163-DD62-4454-AA11-9F1CF313986E}
+		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F} = {A23951F8-267E-40A7-89B1-B95042F24998}
 	EndGlobalSection
 EndGlobal

@@ -1,11 +1,12 @@
 ﻿namespace Orc.Analytics.Example
 {
     using System.Windows;
-
+    using Catel;
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.IoC;
     using Catel.Logging;
+    using Catel.MVVM;
     using Catel.Reflection;
     using Catel.Windows;
 
@@ -23,6 +24,8 @@
 #endif
 
             Log.Info("Starting application");
+
+            var serviceLocator = ServiceLocator.Default;
 
             // To force the loading of all assemblies at startup, uncomment the lines below:
 
@@ -43,8 +46,13 @@
 
             // TODO: Register custom types in the ServiceLocator
             //Log.Info("Registering custom types");
-            //var serviceLocator = ServiceLocator.Default;
+
             //serviceLocator.RegisterType<IMyInterface, IMyClass>();
+
+            Log.Info("Registering application-wide commands");
+
+            var commandManager = serviceLocator.ResolveType<ICommandManager>();
+            commandManager.CreateCommandWithGesture(typeof(TestCommands), "AppWideTest");
 
             StyleHelper.CreateStyleForwardersForDefaultStyles();
 
