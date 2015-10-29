@@ -10,12 +10,14 @@ namespace Orc.Analytics
     using System;
     using System.Management;
     using System.Text;
+    using System.Threading;
     using Catel.Logging;
 
     public class UserIdService : IUserIdService
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
+        private readonly object _lock = new object();
         private string _userId;
 
         /// <summary>
@@ -24,24 +26,27 @@ namespace Orc.Analytics
         /// <returns>System.String.</returns>
         public string GetUserId()
         {
-            if (!string.IsNullOrWhiteSpace(_userId))
+            lock (_lock)
             {
-                return _userId;
+                if (!string.IsNullOrWhiteSpace(_userId))
+                {
+                    return _userId;
+                }
+
+                Log.Debug("Calculating user id");
+
+                var cpuId = GetCpuId();
+                var hddId = GetHddId();
+
+                var uniqueIdPreValue = string.Format("{0}_{1}", cpuId, hddId);
+                var uniqueId = GetMd5Hash(uniqueIdPreValue);
+
+                Log.Debug("Calculated user id '{0}'", uniqueId);
+
+                _userId = uniqueId;
+
+                return uniqueId;
             }
-
-            Log.Debug("Calculating user id");
-
-            var cpuId = GetCpuId();
-            var hddId = GetHddId();
-
-            var uniqueIdPreValue = string.Format("{0}_{1}", cpuId, hddId);
-            var uniqueId = GetMd5Hash(uniqueIdPreValue);
-
-            Log.Debug("Calculated user id '{0}'", uniqueId);
-
-            _userId = uniqueId;
-
-            return uniqueId;
         }
 
         private string GetMd5Hash(string value)
