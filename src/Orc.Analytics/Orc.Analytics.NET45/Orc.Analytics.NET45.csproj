@@ -57,8 +57,9 @@
       <HintPath>..\..\..\lib\GoogleAnalyticsSDK.1.3.00\lib\portable-net45+win8+wp8\GoogleAnalytics.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.SystemInfo">
-      <HintPath>..\..\..\lib\Orc.SystemInfo.1.1.0-unstable0003\lib\net45\Orc.SystemInfo.dll</HintPath>
+    <Reference Include="Orc.SystemInfo, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Orc.SystemInfo.1.1.0-unstable0007\lib\net45\Orc.SystemInfo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
