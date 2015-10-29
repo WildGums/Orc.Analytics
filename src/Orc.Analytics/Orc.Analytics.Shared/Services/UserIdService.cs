@@ -8,17 +8,26 @@
 namespace Orc.Analytics
 {
     using System;
-    using System.Management;
     using System.Text;
-    using System.Threading;
+    using SystemInfo;
+    using Catel;
     using Catel.Logging;
+    using Catel.Threading;
 
     public class UserIdService : IUserIdService
     {
+        private readonly ISystemIdentificationService _systemIdentificationService;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
         private readonly object _lock = new object();
         private string _userId;
+
+        public UserIdService(ISystemIdentificationService systemIdentificationService)
+        {
+            Argument.IsNotNull(() => systemIdentificationService);
+
+            _systemIdentificationService = systemIdentificationService;
+        }
 
         /// <summary>
         /// Gets the user identifier.
@@ -35,10 +44,19 @@ namespace Orc.Analytics
 
                 Log.Debug("Calculating user id");
 
-                var cpuId = GetCpuId();
-                var hddId = GetHddId();
+                var cpuId = string.Empty;
+                var hddId = string.Empty;
+                var macId = string.Empty;
 
-                var uniqueIdPreValue = string.Format("{0}_{1}", cpuId, hddId);
+                TaskHelper.RunAndWait(new Action[]
+                {
+                    // ORCOMP-203: Disable cpu because of performance
+                    //() => cpuId = _systemIdentificationService.GetCpuId(),
+                    () => hddId = _systemIdentificationService.GetHardDriveId(),
+                    () => macId = _systemIdentificationService.GetMacId()
+                });
+
+                var uniqueIdPreValue = string.Format("{0}_{1}_{2}", cpuId, hddId, macId);
                 var uniqueId = GetMd5Hash(uniqueIdPreValue);
 
                 Log.Debug("Calculated user id '{0}'", uniqueId);
@@ -62,57 +80,6 @@ namespace Orc.Analytics
             }
 
             return sb.ToString();
-        }
-
-        private string GetCpuId()
-        {
-            Log.Debug("Retrieving CPU id");
-
-            var cpuId = string.Empty;
-
-            try
-            {
-                var managementClass = new ManagementClass("win32_processor");
-                var managementObjectCollection = managementClass.GetInstances();
-
-                foreach (var managementObject in managementObjectCollection)
-                {
-                    cpuId = managementObject.Properties["processorID"].Value.ToString();
-                    break;
-                }
-
-                Log.Debug("Retrieved CPU id '{0}'", cpuId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to retrieve CPU id");
-            }
-
-            return cpuId;
-        }
-
-        private string GetHddId()
-        {
-            Log.Debug("Retrieving HDD id");
-
-            var hddId = string.Empty;
-
-            try
-            {
-                const string drive = "C";
-                var disk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + drive + @":""");
-                disk.Get();
-
-                hddId = disk["VolumeSerialNumber"].ToString();
-
-                Log.Debug("Retrieved HDD id '{0}'", hddId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to retrieve HDD id");
-            }
-
-            return hddId;
         }
     }
 }

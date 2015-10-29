@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers VerifyAssembly="true">
   <ModuleInit/>
-  <Catel/>
   <Costura>
     <IncludeAssemblies>
       GoogleAnalytics.Core
+      Orc.SystemInfo
     </IncludeAssemblies>
   </Costura>
+  <Catel/>
+  <LoadAssembliesOnStartup/>
 </Weavers>
