@@ -29,11 +29,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\output\debug\NET45\Orc.Analytics\</OutputPath>
+    <OutputPath>..\..\..\output\release\NET45\Orc.Analytics\</OutputPath>
     <DefineConstants>TRACE;NET;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\output\debug\NET45\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\output\release\NET45\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
     <NoWarn>1591;1998</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
