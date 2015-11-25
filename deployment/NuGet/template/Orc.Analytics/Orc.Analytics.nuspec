@@ -24,8 +24,15 @@
 	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
     
     <dependencies>
-      <dependency id="Catel.Core" version="[replaced]" />
-      <!-- <dependency id="GoogleAnalyticsSDK" version="[replaced]" /> -->
+	    <group targetFramework="net40">
+          <dependency id="Catel.MVVM" version="[replaced]" />
+          <dependency id="Microsoft.Net.Http" version="[replaced]" />
+        </group>
+        
+        <!-- Required to make sure NET45 doesn't pick up Microsoft.Net.Http dependency from NET40, they are embedded via Costura -->
+        <group targetFramework="net45">
+		  <dependency id="Catel.MVVM" version="[replaced]" />
+        </group>  
     </dependencies>
   </metadata>
 </package>
