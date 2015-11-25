@@ -1,4 +1,6 @@
 ﻿using Catel.IoC;
+using Catel.Services;
+using Catel.Services.Models;
 using Orc.Analytics;
 
 /// <summary>
@@ -15,5 +17,8 @@ public static class ModuleInitializer
 
         serviceLocator.RegisterType<IUserIdService, UserIdService>();
         serviceLocator.RegisterType<IGoogleAnalyticsService, GoogleAnalyticsService>();
+
+        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.Analytics", "Orc.Analytics.Properties", "Resources"));
     }
 }
