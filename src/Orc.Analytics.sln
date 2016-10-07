@@ -1,18 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.NET40", "Orc.Analytics\Orc.Analytics.NET40\Orc.Analytics.NET40.csproj", "{4258FC75-DD23-4877-A56D-3A077AB57F2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A8A1A4EE-E04A-43AB-90C9-41E7B82EE1E5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{4750F6DD-3B92-4B5D-8D73-C26303621229}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\readme.txt = ..\lib\readme.txt
-		..\lib\repositories.config = ..\lib\repositories.config
-		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{1FE0D431-A761-4239-B2D6-D32C70723FD2}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,13 +32,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.NET45", "Orc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Tests.NET45", "Orc.Analytics.Tests\Orc.Analytics.Tests.NET45\Orc.Analytics.Tests.NET45.csproj", "{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.NET46", "Orc.Analytics\Orc.Analytics.NET46\Orc.Analytics.NET46.csproj", "{2DCA05B1-0191-4F17-8518-053A322C1A60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Analytics.Tests.NET46", "Orc.Analytics.Tests\Orc.Analytics.Tests.NET46\Orc.Analytics.Tests.NET46.csproj", "{6D3FA3D3-880E-4991-90A3-DF147E57129A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{d356bec8-19be-4c5e-9a07-4f6a8ae75741}*SharedItemsImports = 13
 		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{4258fc75-dd23-4877-a56d-3a077ab57f2d}*SharedItemsImports = 4
 		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{d6415689-67de-4fee-aa72-6d7eedddceb6}*SharedItemsImports = 4
 		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{f3ec8f09-7800-4274-8e08-912402f8439d}*SharedItemsImports = 4
+		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{2dca05b1-0191-4f17-8518-053a322c1a60}*SharedItemsImports = 4
 		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{ff90e6b4-4a91-40ac-9ce4-823ae9a1265f}*SharedItemsImports = 4
+		Orc.Analytics.Tests\Orc.Analytics.Tests.Shared\Orc.Analytics.Tests.Shared.projitems*{6d3fa3d3-880e-4991-90a3-df147e57129a}*SharedItemsImports = 4
 		Orc.Analytics\Orc.Analytics.Shared\Orc.Analytics.Shared.projitems*{850a9f5c-534a-4c69-bad5-a82f2f733a6d}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +72,14 @@ Global
 		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DCA05B1-0191-4F17-8518-053A322C1A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DCA05B1-0191-4F17-8518-053A322C1A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DCA05B1-0191-4F17-8518-053A322C1A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DCA05B1-0191-4F17-8518-053A322C1A60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D3FA3D3-880E-4991-90A3-DF147E57129A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D3FA3D3-880E-4991-90A3-DF147E57129A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D3FA3D3-880E-4991-90A3-DF147E57129A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D3FA3D3-880E-4991-90A3-DF147E57129A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,5 +95,7 @@ Global
 		{D356BEC8-19BE-4C5E-9A07-4F6A8AE75741} = {A23951F8-267E-40A7-89B1-B95042F24998}
 		{F3EC8F09-7800-4274-8E08-912402F8439D} = {B1500163-DD62-4454-AA11-9F1CF313986E}
 		{FF90E6B4-4A91-40AC-9CE4-823AE9A1265F} = {A23951F8-267E-40A7-89B1-B95042F24998}
+		{2DCA05B1-0191-4F17-8518-053A322C1A60} = {B1500163-DD62-4454-AA11-9F1CF313986E}
+		{6D3FA3D3-880E-4991-90A3-DF147E57129A} = {A23951F8-267E-40A7-89B1-B95042F24998}
 	EndGlobalSection
 EndGlobal
