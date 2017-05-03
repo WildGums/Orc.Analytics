@@ -11,6 +11,7 @@
     using Catel.Reflection;
     using Catel.Services;
     using Catel.Windows;
+    using Orchestra;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -24,6 +25,8 @@
 #if DEBUG
             LogManager.AddDebugListener(true);
 #endif
+
+            this.ApplyTheme();
 
             var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();
 
@@ -63,8 +66,6 @@
 
             var commandManager = serviceLocator.ResolveType<ICommandManager>();
             commandManager.CreateCommandWithGesture(typeof(TestCommands), "AppWideTest");
-
-            StyleHelper.CreateStyleForwardersForDefaultStyles();
 
             Log.Info("Calling base.OnStartup");
 

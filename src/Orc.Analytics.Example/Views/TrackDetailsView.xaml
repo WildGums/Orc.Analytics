@@ -3,7 +3,7 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:catel="http://catel.codeplex.com">
 
-    <catel:StackGrid>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -15,17 +15,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Content="Category" />
-        <TextBox Text="{Binding Category}" />
+        <Label Grid.Row="0" Grid.Column="0" Content="Category" />
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Category}" />
 
-        <Label Content="Action" />
-        <TextBox Text="{Binding Action}" />
+        <Label Grid.Row="1" Grid.Column="0" Content="Action" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Action}" />
         
-        <catel:EmptyCell />
-        <StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
             <Button Command="{Binding Send}" Content="Submit" />
             <Button Command="{catel:CommandManagerBinding TestCommands.AppWideTest}" Content="App-wide command test" />
         </StackPanel>
-    </catel:StackGrid>
+    </Grid>
     
 </catel:UserControl>
