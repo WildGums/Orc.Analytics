@@ -58,8 +58,8 @@
     <Reference Include="Orc.FileSystem, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Orc.FileSystem.1.2.6\lib\net46\Orc.FileSystem.dll</HintPath>
     </Reference>
-    <Reference Include="Orc.SystemInfo, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Orc.SystemInfo.1.2.0\lib\net46\Orc.SystemInfo.dll</HintPath>
+    <Reference Include="Orc.SystemInfo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Orc.SystemInfo.2.0.0-unstable0013\lib\net46\Orc.SystemInfo.dll</HintPath>
     </Reference>
     <Reference Include="Orchestra.Core, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Orchestra.Core.2.7.0-unstable0010\lib\net46\Orchestra.Core.dll</HintPath>

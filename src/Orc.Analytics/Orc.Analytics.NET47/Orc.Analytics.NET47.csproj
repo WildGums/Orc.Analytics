@@ -19,24 +19,24 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\output\debug\NET40\Orc.Analytics\</OutputPath>
+    <OutputPath>..\..\..\output\debug\NET47\Orc.Analytics\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\..\..\output\debug\NET40\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\output\debug\NET47\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
     <NoWarn>1591;1998</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\output\release\NET40\Orc.Analytics\</OutputPath>
+    <OutputPath>..\..\..\output\release\NET47\Orc.Analytics\</OutputPath>
     <DefineConstants>TRACE;NET;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\..\..\output\release\NET40\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\output\release\NET47\Orc.Analytics\Orc.Analytics.XML</DocumentationFile>
     <NoWarn>1591;1998</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -61,8 +61,8 @@
       <HintPath>..\..\..\lib\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Orc.SystemInfo, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\lib\Orc.SystemInfo.1.2.0\lib\net46\Orc.SystemInfo.dll</HintPath>
+    <Reference Include="Orc.SystemInfo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Orc.SystemInfo.2.0.0-unstable0013\lib\net46\Orc.SystemInfo.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
