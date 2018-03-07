@@ -16,13 +16,13 @@ namespace Orc.Analytics.Auditors
     public class AnalyticsAuditor : AuditorBase
     {
         #region Fields
-        private readonly IGoogleAnalyticsService _analyticsService;
+        private readonly IAnalyticsService _analyticsService;
 
         private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new Dictionary<int, DateTime>();
         #endregion
 
         #region Constructors
-        public AnalyticsAuditor(IGoogleAnalyticsService analyticsService)
+        public AnalyticsAuditor(IAnalyticsService analyticsService)
         {
             Argument.IsNotNull(() => analyticsService);
 

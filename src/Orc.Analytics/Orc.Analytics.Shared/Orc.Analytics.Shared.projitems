@@ -10,13 +10,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
-	<Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Auditors\AnalyticsAuditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IAnalyticsServiceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IGoogleAnalyticsServiceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\GoogleAnalyticsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAnalyticsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IGoogleAnalyticsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IUserIdService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\UserIdService.cs" />

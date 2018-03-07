@@ -18,7 +18,7 @@ namespace Orc.Analytics
     using Catel.Reflection;
     using GoogleAnalytics.Core;
 
-    public class GoogleAnalyticsService : IGoogleAnalyticsService
+    public class GoogleAnalyticsService : IAnalyticsService, IGoogleAnalyticsService
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
@@ -28,6 +28,7 @@ namespace Orc.Analytics
 
         private readonly ConcurrentQueue<Action> _queue = new ConcurrentQueue<Action>();
 
+        private bool _isTrackerInitializing;
         private bool _isTrackerInitialized;
 
         private Tracker _tracker;
@@ -186,8 +187,6 @@ namespace Orc.Analytics
             {
                 if (!_isTrackerInitialized)
                 {
-                    _isTrackerInitialized = true;
-
 #pragma warning disable 4014
                     InitializeTracker();
                     return;
@@ -200,42 +199,62 @@ namespace Orc.Analytics
 
         private void InitializeTracker()
         {
-            Log.Debug("Initializing tracker");
-
-            if (string.IsNullOrWhiteSpace(AccountId))
+            if (_isTrackerInitializing || _isTrackerInitialized)
             {
-                Log.Warning("Account Id is null or whitespace, cannot create tracker");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(UserId))
+            try
             {
-                Log.Debug("User Id is null or whitespace, using the IUserIdService to retrieve the user id");
+                _isTrackerInitializing = true;
 
-                _userId = _userIdService.GetUserId();
+                Log.Debug("Initializing tracker");
+
+                if (string.IsNullOrWhiteSpace(AccountId))
+                {
+                    Log.Warning("Account Id is null or whitespace, cannot create tracker");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(UserId))
+                {
+                    Log.Debug("User Id is null or whitespace, using the IUserIdService to retrieve the user id");
+
+                    _userId = _userIdService.GetUserId();
+                }
+
+                var resolution = new Dimensions((int) System.Windows.SystemParameters.PrimaryScreenWidth,
+                    (int) System.Windows.SystemParameters.PrimaryScreenHeight);
+
+                var trackerManager = new TrackerManager(new PlatformInfoProvider
+                {
+                    AnonymousClientId = UserId,
+                    UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko",
+                    UserLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                    ScreenResolution = resolution,
+                    ViewPortResolution = resolution
+                });
+
+                var tracker = trackerManager.GetTracker(AccountId);
+                tracker.AppName = AppName;
+                tracker.AppVersion = AppVersion;
+
+                _tracker = tracker;
+
+                _isTrackerInitialized = true;
+
+                Log.Info("Initialized tracker, starting to empty the existing queue now");
+
+                SendTrackingsFromQueue();
             }
-
-            var resolution = new Dimensions((int)System.Windows.SystemParameters.PrimaryScreenWidth,
-                (int)System.Windows.SystemParameters.PrimaryScreenHeight);
-
-            var trackerManager = new TrackerManager(new PlatformInfoProvider
+            catch (Exception ex)
             {
-                AnonymousClientId = UserId,
-                UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko",
-                UserLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
-                ScreenResolution = resolution,
-                ViewPortResolution = resolution
-            });
-
-            var tracker = trackerManager.GetTracker(AccountId);
-            tracker.AppName = AppName;
-            tracker.AppVersion = AppVersion;
-
-            _tracker = tracker;
-
-            Log.Info("Initialized tracker, starting to empty the existing queue now");
-
-            SendTrackingsFromQueue();
+                Log.Error(ex, "Failed to initialize analytics tracker");
+            }
+            finally
+            {
+                _isTrackerInitializing = false;
+            }
         }
 
         private void SendTrackingsFromQueue()

@@ -16,13 +16,13 @@ namespace Orc.Analytics.Example.ViewModels
     /// </summary>
     public class TrackDetailsViewModel : ViewModelBase
     {
-        private readonly IGoogleAnalyticsService _googleAnalyticsService;
+        private readonly IAnalyticsService _analyticsService;
 
-        public TrackDetailsViewModel(IGoogleAnalyticsService googleAnalyticsService)
+        public TrackDetailsViewModel(IAnalyticsService analyticsService)
         {
-            Argument.IsNotNull(() => googleAnalyticsService);
+            Argument.IsNotNull(() => analyticsService);
 
-            _googleAnalyticsService = googleAnalyticsService;
+            _analyticsService = analyticsService;
 
             Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
 
@@ -54,7 +54,7 @@ namespace Orc.Analytics.Example.ViewModels
 
         private async Task OnSendExecuteAsync()
         {
-            await _googleAnalyticsService.SendEventAsync(Category, Action);
+            await _analyticsService.SendEventAsync(Category, Action);
         }
         #endregion
     }
