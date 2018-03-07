@@ -17,18 +17,19 @@ namespace Orc.Analytics.Example.ViewModels
     /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly IGoogleAnalyticsService _googleAnalyticsService;
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+        private readonly IAnalyticsService _analyticsService;
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
-        public MainWindowViewModel(IGoogleAnalyticsService googleAnalyticsService)
+        public MainWindowViewModel(IAnalyticsService analyticsService)
         {
-            Argument.IsNotNull(() => googleAnalyticsService);
+            Argument.IsNotNull(() => analyticsService);
 
-            _googleAnalyticsService = googleAnalyticsService;
+            _analyticsService = analyticsService;
 
             AccountId = "UA-54670241-1";
         }
@@ -54,7 +55,7 @@ namespace Orc.Analytics.Example.ViewModels
         #region Methods
         private void OnAccountIdChanged()
         {
-            _googleAnalyticsService.AccountId = AccountId;
+            _analyticsService.AccountId = AccountId;
         }
         #endregion
     }

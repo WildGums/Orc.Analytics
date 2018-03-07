@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGoogleAnalyticsService.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
+// <copyright file="IAnalyticsService.cs" company="WildGums">
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -10,8 +10,7 @@ namespace Orc.Analytics
     using System;
     using System.Threading.Tasks;
 
-    [ObsoleteEx(Message = "Use non-brand specific version", ReplacementTypeOrMember = "IAnalyticsService", TreatAsErrorFromVersion = "2.0", RemoveInVersion = "3.0")]
-    public interface IGoogleAnalyticsService
+    public interface IAnalyticsService
     {
         #region Properties
         bool IsEnabled { get; set; }

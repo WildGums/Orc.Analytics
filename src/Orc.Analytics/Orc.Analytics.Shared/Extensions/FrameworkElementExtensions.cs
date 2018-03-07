@@ -13,7 +13,7 @@ namespace Orc.Analytics
 
     public static partial class FrameworkElementExtensions
     {
-        private static readonly IGoogleAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveType<IGoogleAnalyticsService>();
+        private static readonly IAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveType<IAnalyticsService>();
 
         public static Task TrackViewForAnalyticsAsync(this FrameworkElement frameworkElement)
         {

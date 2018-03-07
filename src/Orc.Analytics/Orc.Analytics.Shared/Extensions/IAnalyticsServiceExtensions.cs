@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGoogleAnalyticsService.cs" company="CatenaLogic">
+// <copyright file="IAnalyticsService.cs" company="CatenaLogic">
 //   Copyright (c) 2008 - 2014 CatenaLogic. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,10 +11,9 @@ namespace Orc.Analytics
     using System.Threading.Tasks;
     using Catel;
 
-    [ObsoleteEx(Message = "Use non-brand specific version", ReplacementTypeOrMember = "IAnalyticsServiceExtensions", TreatAsErrorFromVersion = "2.0", RemoveInVersion = "3.0")]
-    public static class IGoogleAnalyticsServiceExtensions
+    public static class IAnalyticsServiceExtensions
     {
-        public static async Task ExecuteAndTrackAsync(this IGoogleAnalyticsService service, Func<Task> func, string category,
+        public static async Task ExecuteAndTrackAsync(this IAnalyticsService service, Func<Task> func, string category,
             string variable)
         {
             Argument.IsNotNull("service", service);
@@ -28,7 +27,7 @@ namespace Orc.Analytics
 #pragma warning restore 4014
         }
 
-        public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IGoogleAnalyticsService service, Func<Task<T>> func, string category,
+        public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IAnalyticsService service, Func<Task<T>> func, string category,
             string variable)
         {
             Argument.IsNotNull("service", service);
@@ -44,14 +43,14 @@ namespace Orc.Analytics
             return result;
         }
 
-        public static Task SendViewModelCreatedAsync(this IGoogleAnalyticsService googleAnalytics, string viewModel)
+        public static Task SendViewModelCreatedAsync(this IAnalyticsService googleAnalytics, string viewModel)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
             return googleAnalytics.SendEventAsync("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
         }
 
-        public static async Task SendViewModelClosedAsync(this IGoogleAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
+        public static async Task SendViewModelClosedAsync(this IAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
@@ -59,7 +58,7 @@ namespace Orc.Analytics
             await googleAnalytics.SendTimingAsync(duration, "ViewModels", viewModel);
         }
 
-        public static Task SendCommandAsync(this IGoogleAnalyticsService googleAnalytics, string viewModelName, string commandName)
+        public static Task SendCommandAsync(this IAnalyticsService googleAnalytics, string viewModelName, string commandName)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 

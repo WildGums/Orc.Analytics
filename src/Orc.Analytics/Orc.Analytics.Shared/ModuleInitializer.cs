@@ -15,6 +15,7 @@ public static class ModuleInitializer
         var serviceLocator = ServiceLocator.Default;
 
         serviceLocator.RegisterType<IUserIdService, UserIdService>();
+        serviceLocator.RegisterType<IAnalyticsService, GoogleAnalyticsService>();
         serviceLocator.RegisterType<IGoogleAnalyticsService, GoogleAnalyticsService>();
 
         var languageService = serviceLocator.ResolveType<ILanguageService>();
