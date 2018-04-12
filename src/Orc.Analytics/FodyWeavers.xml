@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers VerifyAssembly="true">
+  <ModuleInit/>
+  <Costura DisableCleanup="true">
+    <IncludeAssemblies>
+      GoogleAnalytics.Core
+      System.Net.Http
+      System.Net.Http.Extensions
+      System.Net.Http.Primitives
+      System.Net.Http.WebRequest
+    </IncludeAssemblies>
+  </Costura>
+  <Catel/>
+  <LoadAssembliesOnStartup/>
+</Weavers>
