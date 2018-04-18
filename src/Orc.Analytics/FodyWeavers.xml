@@ -4,10 +4,6 @@
   <Costura DisableCleanup="true">
     <IncludeAssemblies>
       GoogleAnalytics.Core
-      System.Net.Http
-      System.Net.Http.Extensions
-      System.Net.Http.Primitives
-      System.Net.Http.WebRequest
     </IncludeAssemblies>
   </Costura>
   <Catel/>
