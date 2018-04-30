@@ -7,6 +7,7 @@
 
 namespace Orc.Analytics.Tests
 {
+    using System.Runtime.CompilerServices;
     using ApiApprover;
     using Auditors;
     using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace Orc.Analytics.Tests
     [TestFixture]
     public class PublicApiFacts
     {
-        [Test]
+        [Test, MethodImpl(MethodImplOptions.NoInlining)]
         public void Orc_Analytics_HasNoBreakingChanges()
         {
             var assembly = typeof(AnalyticsAuditor).Assembly;
