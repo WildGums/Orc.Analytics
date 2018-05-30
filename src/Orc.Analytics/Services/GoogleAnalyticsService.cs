@@ -122,7 +122,7 @@ namespace Orc.Analytics
 
             await InvokeAsync(() =>
             {
-                Log.Debug("Tracking view: {0}", viewName);
+                //Log.Debug("Tracking view: {0}", viewName);
 
                 _tracker.SendView(viewName);
             });
@@ -137,7 +137,7 @@ namespace Orc.Analytics
 
             await InvokeAsync(() =>
             {
-                Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
+                //Log.Debug("Tracking event: {0} | {1} | {2} | {3}", category, action, label, value);
 
                 _tracker.SendEvent(category, action, label, value);
             });
@@ -156,7 +156,7 @@ namespace Orc.Analytics
 
             await InvokeAsync(() =>
             {
-                Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
+                //Log.Debug("Tracking transaction: {0} | {1} | {2} | {3} | {4}", sku, name, transactionId, costPerProduct, quantity);
 
                 _tracker.SendTransaction(transaction);
             });
@@ -171,7 +171,7 @@ namespace Orc.Analytics
 
             await InvokeAsync(() =>
             {
-                Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
+                //Log.Debug("Tracking timing: {0} | {1} | {2} | {3}", time, category, variable, label);
 
                 _tracker.SendTiming(time, category, variable, label);
             });
@@ -212,7 +212,7 @@ namespace Orc.Analytics
 
                 if (string.IsNullOrWhiteSpace(AccountId))
                 {
-                    Log.Warning("Account Id is null or whitespace, cannot create tracker");
+                    Log.Debug("Account Id is null or whitespace, cannot create tracker");
                     return;
                 }
 
