@@ -34,7 +34,8 @@
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     
-    <Compile Update="**\ModuleInitializer.cs">
+    <Compile Remove="**\ModuleInitializer.cs" />
+    <Compile Include="**\ModuleInitializer.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
   </ItemGroup>
