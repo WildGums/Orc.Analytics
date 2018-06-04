@@ -33,9 +33,5 @@
     <Compile Include="..\*.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
-    
-    <Compile Include="**\ModuleInitializer.cs">
-      <SonarQubeExclude>true</SonarQubeExclude>
-    </Compile>
   </ItemGroup>
 </Project>
