@@ -4,6 +4,7 @@
     <AssemblyName>Orc.Analytics.Example.NET</AssemblyName>
     <RootNamespace>Orc.Analytics.Example</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 
   <PropertyGroup>
