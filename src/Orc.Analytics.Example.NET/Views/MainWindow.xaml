@@ -1,0 +1,42 @@
+﻿<catel:DataWindow x:Class="Orc.Analytics.Example.Views.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:catel="http://schemas.catelproject.com"
+                  xmlns:views="clr-namespace:Orc.Analytics.Example.Views"
+                  ShowInTaskbar="True" ResizeMode="CanResize" SizeToContent="Manual" 
+                  WindowStartupLocation="Manual" WindowState="Normal" 
+                  Width="800" Height="450" MinWidth="800" MinHeight="450">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" MinHeight="200" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="Google Analytics account id" />
+            <TextBox Grid.Column="1" Text="{Binding AccountId}" />
+        </Grid>
+
+        <Label Grid.Row="1">
+            <TextBlock TextWrapping="Wrap">
+                Use the controls below to create some analytics. It shows how to use the analytics and how to interact with it. The analytics
+                should show up in realtime analytics in Google Analytics.
+            </TextBlock>
+        </Label>        
+        
+        <GroupBox Grid.Row="2" Header="Send custom tracker data">
+            <views:TrackDetailsView />
+        </GroupBox>
+
+        <TextBox Grid.Row="3" x:Name="outputTextBox" TextWrapping="Wrap" IsReadOnly="True" />
+    </Grid>
+
+</catel:DataWindow>

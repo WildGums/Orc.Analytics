@@ -1,0 +1,30 @@
+﻿<catel:UserControl x:Class="Orc.Analytics.Example.Views.TrackDetailsView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:catel="http://schemas.catelproject.com">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Category" />
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Category}" />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Action" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Action}" />
+        
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Button Command="{Binding Send}" Content="Submit" />
+            <Button Command="{catel:CommandManagerBinding TestCommands.AppWideTest}" Content="App-wide command test" />
+        </StackPanel>
+    </Grid>
+    
+</catel:UserControl>
