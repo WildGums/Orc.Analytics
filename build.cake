@@ -25,7 +25,7 @@ Parameters["StartYear"] = "2014";
 
 var ComponentsToBuild = new string[]
 {
-    "Orc.Analytics"
+    string.Format("{0}", GetBuildServerVariable("SolutionName"))
 };
 
 //=======================================================
