@@ -9,7 +9,7 @@ var TestTargetFramework = GetBuildServerVariable("TestTargetFramework", "net46")
 
 private void RunUnitTests(string projectName)
 {
-    var testResultsDirectory = string.Format("./output/testresults/{0}/", projectName);
+    var testResultsDirectory = string.Format("{0}/testresults/{1}/", OutputRootDirectory, projectName);
 
     CreateDirectory(testResultsDirectory);
 
