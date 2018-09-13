@@ -5,6 +5,7 @@
 private void RunTestsUsingNUnit(string projectName, string testTargetFramework, string testResultsDirectory)
 {
     var testFile = string.Format("{0}/{1}/{2}.dll", GetProjectOutputDirectory(projectName), testTargetFramework, projectName);
+    var resultsFile = string.Format("{0}/testresults.xml", testResultsDirectory);
 
     NUnit3(testFile, new NUnit3Settings
     {
@@ -12,11 +13,16 @@ private void RunTestsUsingNUnit(string projectName, string testTargetFramework, 
         {
             new NUnit3Result
             {
-                FileName = string.Format("{0}/testresults.xml", testResultsDirectory)
+                FileName = resultsFile
             }
         },
         NoHeader = true,
         NoColor = true,
         //Work = testResultsDirectory
     });
+
+    if (!FileExists(resultsFile))
+    {
+        Error(string.Format("Expected results file '{0}' does not exist", resultsFile));
+    }
 }
