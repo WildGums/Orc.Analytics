@@ -68,14 +68,13 @@ private void RunUnitTests(string projectName)
     {
         Information("Results are available in '{0}'", testResultsDirectory);
     }
+    else if (failed)
+    {
+        throw new Exception("Unit test execution failed");
+    }
     else
     {
-        Warning("No tests were ran, check whether the used test framework '{0}' is available", TestFramework);
-    }
-
-    if (failed)
-    {
-        Error("Unit test execution failed");
+        Warning("No tests were executed, check whether the used test framework '{0}' is available", TestFramework);
     }
 }
 

@@ -201,8 +201,7 @@ private void DeployDockerImages()
 
         if (string.IsNullOrWhiteSpace(dockerRegistryUrl))
         {
-            Error("Docker registry url is empty, as a protection mechanism this must *always* be specified to make sure packages aren't accidentally deployed to some default public registry");
-            return;
+            throw new Exception("Docker registry url is empty, as a protection mechanism this must *always* be specified to make sure packages aren't accidentally deployed to some default public registry");
         }
 
         // Note: we are logging in each time because the registry might be different per container
