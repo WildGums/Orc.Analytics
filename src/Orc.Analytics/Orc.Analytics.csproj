@@ -8,6 +8,7 @@
     <PackageVersion>3.0.0-alpha0001</PackageVersion>
     <Description>Analytics library.</Description>
     <PackageTags>orc;analytics;google</PackageTags>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
   
   <PropertyGroup>
