@@ -212,7 +212,7 @@ private void PackageComponents()
                 Recursive = true
             });
 
-            Information();
+            Information(string.Empty);
 
             // Step 2: Go packaging!
 
