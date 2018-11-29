@@ -229,11 +229,11 @@ private void PackageComponents()
             // uses obj/release instead of [outputdirectory]
             msBuildSettings.WithProperty("DotNetPackIntermediateOutputPath", outputDirectory);
 
-            msBuildSettings.AddFileLogger(new MSBuildFileLoggerSettings
-            {
-                Verbosity = DotNetCoreVerbosity.Diagnostic,
-                LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_dotnet_pack_{0}.log", component))
-            });
+            // msBuildSettings.AddFileLogger(new MSBuildFileLoggerSettings
+            // {
+            //     Verbosity = DotNetCoreVerbosity.Diagnostic,
+            //     LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_dotnet_pack_{0}.log", component))
+            // });
 
             var packSettings = new DotNetCorePackSettings
             {
