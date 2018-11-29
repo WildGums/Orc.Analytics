@@ -192,25 +192,19 @@ private void PackageComponents()
 
             Information("Cleaning intermediate files for component '{0}'", component);
 
-            var binFolder = string.Format("{0}/bin", projectDirectory);
+            var binFolderPattern = string.Format("{0}/bin/{1}/**.dll", projectDirectory, ConfigurationName);
 
-            Information("Deleting 'bin' directory from ''{0}", binFolder);
+            Information("Deleting 'bin' directory contents using '{0}'", binFolderPattern);
 
-            DeleteDirectory(binFolder, new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
+            var binFiles = GetFiles(binFolderPattern);
+            DeleteFiles(binFiles);
 
-            var objFolder = string.Format("{0}/obj", projectDirectory);
+            var objFolderPattern = string.Format("{0}/obj/{1}/**.dll", projectDirectory, ConfigurationName);
 
-            Information("Deleting 'obj' directory from ''{0}", objFolder);
+            Information("Deleting 'bin' directory contents using '{0}'", objFolderPattern);
 
-            DeleteDirectory(objFolder, new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
+            var objFiles = GetFiles(objFolderPattern);
+            DeleteFiles(objFiles);
 
             Information(string.Empty);
 
@@ -247,7 +241,6 @@ private void PackageComponents()
                 OutputDirectory = OutputRootDirectory,
                 Configuration = ConfigurationName,
                 NoBuild = true,
-                //NoRestore = true,
                 Verbosity = msBuildSettings.Verbosity
             };
 
