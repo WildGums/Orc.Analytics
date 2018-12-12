@@ -124,7 +124,8 @@ private void BuildComponents()
         var projectFileName = GetProjectFileName(component);
         
         var msBuildSettings = new MSBuildSettings {
-            Verbosity = Verbosity.Quiet, // Verbosity.Diagnostic
+            Verbosity = Verbosity.Quiet,
+            //Verbosity = Verbosity.Diagnostic,
             ToolVersion = MSBuildToolVersion.Default,
             Configuration = ConfigurationName,
             MSBuildPlatform = MSBuildPlatform.x86, // Always require x86, see platform for actual target platform
@@ -136,6 +137,13 @@ private void BuildComponents()
         {
             msBuildSettings.ToolPath = toolPath;
         }
+
+        // msBuildSettings.AddFileLogger(new MSBuildFileLogger
+        // {
+        //     //Verbosity = msBuildSettings.Verbosity,
+        //     Verbosity = Verbosity.Diagnostic,
+        //     LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_{0}_build.log", component))
+        // });
 
         // Note: we need to set OverridableOutputPath because we need to be able to respect
         // AppendTargetFrameworkToOutputPath which isn't possible for global properties (which
@@ -196,6 +204,11 @@ private void BuildComponents()
 
                 sourceRoot.Add(new XAttribute("Include", sourceRootValue));
                 sourceRoot.Add(new XAttribute("RepositoryUrl", repositoryUrl));
+
+                // Note: since we are not allowing source control manager queries (we don't want to require a .git directory),
+                // we must specify the additional information below
+                sourceRoot.Add(new XAttribute("SourceControl", "git"));
+                sourceRoot.Add(new XAttribute("RevisionId", RepositoryCommitId));
 
                 sourceRootItemGroup.Add(sourceRoot);
                 projectElement.Add(sourceRootItemGroup);
@@ -285,7 +298,7 @@ private void PackageComponents()
         // msBuildSettings.AddFileLogger(new MSBuildFileLoggerSettings
         // {
         //     Verbosity = DotNetCoreVerbosity.Diagnostic,
-        //     LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_dotnet_pack_{0}.log", component))
+        //     LogFile = System.IO.Path.Combine(OutputRootDirectory, string.Format(@"MsBuild_{0}_pack.log", component))
         // });
 
         var packSettings = new DotNetCorePackSettings
