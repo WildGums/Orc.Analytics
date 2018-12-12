@@ -295,7 +295,7 @@ private void PackageComponents()
         var repositoryUrl = RepositoryUrl;
         if (!IsLocalBuild && !string.IsNullOrWhiteSpace(repositoryUrl))
         {       
-            Information("Repository url is specified, enabling SourceLink to commit '{0}/commit/{1}'", repositoryUrl, RepositoryCommitId);
+            Information("Repository url is specified, adding commit specific data to package");
 
             // TODO: For now we are assuming everything is git, we might need to change that in the future
             // See why we set the values at https://github.com/dotnet/sourcelink/issues/159#issuecomment-427639278
