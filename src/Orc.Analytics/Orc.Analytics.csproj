@@ -28,7 +28,7 @@
     <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="2.1.0" PrivateAssets="all" />
     <PackageReference Include="MethodTimer.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" PrivateAssets="all" />
-    <PackageReference Include="ModuleInit.Fody" Version="1.8.1" PrivateAssets="all" />
+    <PackageReference Include="ModuleInit.Fody" Version="1.8.3" PrivateAssets="all" />
     <PackageReference Include="Obsolete.Fody" Version="4.4.1" PrivateAssets="all" />
     <PackageReference Include="Orc.SystemInfo" Version="3.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
