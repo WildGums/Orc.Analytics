@@ -5,9 +5,6 @@ update_configs:
     update_schedule: "daily"
     automerged_updates:
       - match:
-        dependency_type: "production"
-        update_type: "security:patch"
-      - match:
         dependency_name: "Catel.*"
         update_type: "semver:minor"
       - match:
