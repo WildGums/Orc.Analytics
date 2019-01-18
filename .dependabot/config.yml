@@ -4,12 +4,12 @@ update_configs:
     directory: "/src"
     update_schedule: "daily"
     automerged_updates:
-      - match:
-        dependency_name: "Catel.*"
-        update_type: "all"
-      - match:
-        dependency_name: "Orc.*"
-        update_type: "all"
-      - match:
-        dependency_name: "Orchestra.*"
-        update_type: "all"
+    - match:
+      dependency_name: "Catel.*"
+      update_type: "all"
+    - match:
+      dependency_name: "Orc.*"
+      update_type: "all"
+    - match:
+      dependency_name: "Orchestra.*"
+      update_type: "all"
