@@ -6,17 +6,17 @@ update_configs:
     automerged_updates:
       # Automerge security patches
       - match:
-        dependency_type: "production"
-        update_type: "security:patch"
+          dependency_type: "production"
+          update_type: "security:patch"
       # Automerge Catel
       - match:
-        dependency_name: "Catel.*"
-        update_type: "semver:minor"
+          dependency_name: "Catel.*"
+          update_type: "semver:minor"
       # Automerge Orc.*
       - match:
-        dependency_name: "Orc.*"
-        update_type: "semver:minor"
+          dependency_name: "Orc.*"
+          update_type: "semver:minor"
       # Automerge Orchestra
       - match:
-        dependency_name: "Orchestra.*"
-        update_type: "semver:minor"
+          dependency_name: "Orchestra.*"
+          update_type: "semver:minor"
