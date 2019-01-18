@@ -1,22 +1,26 @@
 version: 1
+
 update_configs:
   - package_manager: "dotnet:nuget"
     directory: "/src"
     update_schedule: "daily"
     automerged_updates:
-      # Automerge security patches
       - match:
-          dependency_type: "production"
-          update_type: "security:patch"
-      # Automerge Catel
+        # Automerge security patches
+        dependency_type: "production"
+        update_type: "security:patch"
+        
       - match:
-          dependency_name: "Catel.*"
-          update_type: "semver:minor"
-      # Automerge Orc.*
+        # Automerge Catel
+        dependency_name: "Catel.*"
+        update_type: "semver:minor"
+        
       - match:
-          dependency_name: "Orc.*"
-          update_type: "semver:minor"
-      # Automerge Orchestra
+        # Automerge Orc.*
+        dependency_name: "Orc.*"
+        update_type: "semver:minor"
+        
       - match:
-          dependency_name: "Orchestra.*"
-          update_type: "semver:minor"
+        # Automerge Orchestra
+        dependency_name: "Orchestra.*"
+        update_type: "semver:minor"
