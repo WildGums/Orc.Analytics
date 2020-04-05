@@ -2,9 +2,9 @@
 {
     using Catel.Configuration;
 
-    public class ConfigurationValue : AnalyticsValue
+    public class ConfigurationAnalyticsValue : AnalyticsValue
     {
-        public ConfigurationValue(ConfigurationContainer container, string key, object defaultValue)
+        public ConfigurationAnalyticsValue(ConfigurationContainer container, string key, object defaultValue)
         {
             Category = "Configuration";
             Container = container;
