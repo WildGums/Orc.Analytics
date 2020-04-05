@@ -7,7 +7,7 @@
             Category = "General";
         }
 
-        public string Category { get; protected set; }
+        public string Category { get; set; }
 
         public string Key { get; set; }
 
