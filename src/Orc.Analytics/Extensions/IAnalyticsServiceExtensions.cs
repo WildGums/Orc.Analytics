@@ -106,7 +106,7 @@ namespace Orc.Analytics
             }
         }
 
-            public static async Task SendConfigurationValuesAsync(this IAnalyticsService googleAnalytics, params ConfigurationAnalyticsValue[] configurationValues)
+        public static async Task SendConfigurationValuesAsync(this IAnalyticsService googleAnalytics, params ConfigurationAnalyticsValue[] configurationValues)
         {
             Argument.IsNotNull("googleAnalytics", googleAnalytics);
 
