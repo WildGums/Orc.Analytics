@@ -10,9 +10,14 @@ namespace Orc.Analytics
     using System;
     using System.Threading.Tasks;
     using Catel;
+    using Catel.Configuration;
+    using Catel.IoC;
+    using Catel.Logging;
 
     public static class IAnalyticsServiceExtensions
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         public static async Task ExecuteAndTrackAsync(this IAnalyticsService service, Func<Task> func, string category,
             string variable)
         {
@@ -75,6 +80,52 @@ namespace Orc.Analytics
             eventName += commandName;
 
             return googleAnalytics.SendEventAsync("Commands", eventName);
+        }
+
+        public static async Task SendAnalyticsValuesAsync(this IAnalyticsService googleAnalytics, params AnalyticsValue[] values)
+        {
+            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+
+            try
+            {
+                foreach (var analyticsValue in values)
+                {
+                    var valueAsString = ObjectToStringHelper.ToString(analyticsValue.Value);
+
+                    if (analyticsValue.Value is bool)
+                    {
+                        valueAsString = valueAsString.ToLower();
+                    }
+
+                    await googleAnalytics.SendEventAsync(analyticsValue.Category, analyticsValue.Key, valueAsString);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to submit analytics values to analytics");
+            }
+        }
+
+            public static async Task SendConfigurationValuesAsync(this IAnalyticsService googleAnalytics, params ConfigurationValue[] configurationValues)
+        {
+            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+
+            try
+            {
+                var serviceLocator = googleAnalytics.GetServiceLocator();
+                var configurationService = serviceLocator.ResolveType<IConfigurationService>();
+
+                foreach (var configurationValue in configurationValues)
+                {
+                    configurationValue.Value = configurationService.GetValue(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
+                }
+
+                await googleAnalytics.SendAnalyticsValuesAsync(configurationValues);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to submit configuration values to analytics");
+            }
         }
     }
 }
