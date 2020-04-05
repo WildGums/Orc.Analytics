@@ -14,9 +14,9 @@ namespace Orc.Analytics
         public string Key { get; set; }
         public object Value { get; set; }
     }
-    public class ConfigurationValue : Orc.Analytics.AnalyticsValue
+    public class ConfigurationAnalyticsValue : Orc.Analytics.AnalyticsValue
     {
-        public ConfigurationValue(Catel.Configuration.ConfigurationContainer container, string key, object defaultValue) { }
+        public ConfigurationAnalyticsValue(Catel.Configuration.ConfigurationContainer container, string key, object defaultValue) { }
         public Catel.Configuration.ConfigurationContainer Container { get; set; }
         public object DefaultValue { get; set; }
     }
@@ -56,7 +56,7 @@ namespace Orc.Analytics
         public static System.Threading.Tasks.Task<T> ExecuteAndTrackWithResultAsync<T>(this Orc.Analytics.IAnalyticsService service, System.Func<System.Threading.Tasks.Task<T>> func, string category, string variable) { }
         public static System.Threading.Tasks.Task SendAnalyticsValuesAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, params Orc.Analytics.AnalyticsValue[] values) { }
         public static System.Threading.Tasks.Task SendCommandAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, string viewModelName, string commandName) { }
-        public static System.Threading.Tasks.Task SendConfigurationValuesAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, params Orc.Analytics.ConfigurationValue[] configurationValues) { }
+        public static System.Threading.Tasks.Task SendConfigurationValuesAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, params Orc.Analytics.ConfigurationAnalyticsValue[] configurationValues) { }
         public static System.Threading.Tasks.Task SendViewModelClosedAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, string viewModel, System.TimeSpan duration) { }
         public static System.Threading.Tasks.Task SendViewModelCreatedAsync(this Orc.Analytics.IAnalyticsService googleAnalytics, string viewModel) { }
     }
