@@ -1,7 +1,7 @@
-﻿[assembly: System.Resources.NeutralResourcesLanguageAttribute("en-US")]
-[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETFramework,Version=v4.6", FrameworkDisplayName=".NET Framework 4.6")]
-public class static LoadAssembliesOnStartup { }
-public class static ModuleInitializer
+﻿[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.7", FrameworkDisplayName=".NET Framework 4.7")]
+public static class LoadAssembliesOnStartup { }
+public static class ModuleInitializer
 {
     public static void Initialize() { }
 }
@@ -20,7 +20,7 @@ namespace Orc.Analytics
         public Catel.Configuration.ConfigurationContainer Container { get; set; }
         public object DefaultValue { get; set; }
     }
-    public class static FrameworkElementExtensions
+    public static class FrameworkElementExtensions
     {
         public static System.Threading.Tasks.Task TrackViewForAnalyticsAsync(this System.Windows.FrameworkElement frameworkElement) { }
     }
@@ -50,7 +50,7 @@ namespace Orc.Analytics
         System.Threading.Tasks.Task SendTransactionAsync(string sku, string name, string transactionId, long costPerProduct, int quantity = 1);
         System.Threading.Tasks.Task SendViewAsync(string viewName);
     }
-    public class static IAnalyticsServiceExtensions
+    public static class IAnalyticsServiceExtensions
     {
         public static System.Threading.Tasks.Task ExecuteAndTrackAsync(this Orc.Analytics.IAnalyticsService service, System.Func<System.Threading.Tasks.Task> func, string category, string variable) { }
         public static System.Threading.Tasks.Task<T> ExecuteAndTrackWithResultAsync<T>(this Orc.Analytics.IAnalyticsService service, System.Func<System.Threading.Tasks.Task<T>> func, string category, string variable) { }
