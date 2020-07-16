@@ -66,7 +66,7 @@ namespace Orc.Analytics
     }
     public class UserIdService : Orc.Analytics.IUserIdService
     {
-        public UserIdService(Orc.SystemInfo.ISystemIdentificationService systemIdentificationService) { }
+        public UserIdService() { }
         public string GetUserId() { }
     }
 }
