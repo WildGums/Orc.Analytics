@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Analytics", "Orc.Analyt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{0729E2B2-31A6-43DC-ADF1-6466FBF32017}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Analytics.Example.NET", "Orc.Analytics.Example.NET\Orc.Analytics.Example.NET.csproj", "{84E536CE-BD71-43FF-B51B-A9C950806C69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orc.Analytics.Example", "Orc.Analytics.Example\Orc.Analytics.Example.csproj", "{84E536CE-BD71-43FF-B51B-A9C950806C69}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9CB12650-C4C2-4DE9-B1EC-A6116FCABD1B}"
 EndProject
