@@ -15,4 +15,6 @@
       Orc.*
     </IncludeAssemblies>
   </LoadAssembliesOnStartup>
+  <Obsolete />
+  <MethodTimer />
 </Weavers>

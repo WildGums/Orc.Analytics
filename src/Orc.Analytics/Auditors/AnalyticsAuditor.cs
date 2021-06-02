@@ -35,7 +35,7 @@ namespace Orc.Analytics.Auditors
         {
             base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
 
-            var viewModelName = viewModel != null ? viewModel.GetType().Name : string.Empty;
+            var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
 
             _analyticsService.SendCommandAsync(viewModelName, commandName);
         }
