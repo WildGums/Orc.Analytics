@@ -104,7 +104,7 @@ namespace Orc.Analytics
             {
                 _tracker = value;
 
-                if (_tracker == null)
+                if (_tracker is null)
                 {
                     _isTrackerInitialized = false;
                 }
@@ -204,6 +204,11 @@ namespace Orc.Analytics
                 return;
             }
 
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             try
             {
                 _isTrackerInitializing = true;
@@ -266,7 +271,7 @@ namespace Orc.Analytics
         private void SendTrackingsFromQueue()
         {
             var tracker = _tracker;
-            if (tracker == null)
+            if (tracker is null)
             {
                 Log.Warning("No tracker available, cannot submit analytics. It might be possible the tracker is still initializing.");
                 return;
@@ -274,8 +279,7 @@ namespace Orc.Analytics
 
             while (_queue.Count > 0)
             {
-                Action action;
-                if (_queue.TryDequeue(out action))
+                if (_queue.TryDequeue(out var action))
                 {
                     action();
                 }
