@@ -45,17 +45,20 @@ namespace Orc.Analytics
 
         private string GetMd5Hash(string value)
         {
-            var md5 = MD5.Create();
-            var inputBytes = Encoding.ASCII.GetBytes(value);
-            var hash = md5.ComputeHash(inputBytes);
-
-            var sb = new StringBuilder();
-            for (var i = 0; i < hash.Length; i++)
+            using (var md5 = MD5.Create())
             {
-                sb.Append(hash[i].ToString("X2"));
-            }
+                var inputBytes = Encoding.ASCII.GetBytes(value);
+                var hash = md5.ComputeHash(inputBytes);
 
-            return sb.ToString();
+                var sb = new StringBuilder();
+
+                for (var i = 0; i < hash.Length; i++)
+                {
+                    sb.Append(hash[i].ToString("X2"));
+                }
+
+                return sb.ToString();
+            }
         }
     }
 }
