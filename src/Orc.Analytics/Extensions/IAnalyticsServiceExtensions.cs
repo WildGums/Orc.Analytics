@@ -112,7 +112,9 @@ namespace Orc.Analytics
 
             try
             {
+#pragma warning disable IDISP001 // Dispose created
                 var serviceLocator = googleAnalytics.GetServiceLocator();
+#pragma warning restore IDISP001 // Dispose created
                 var configurationService = serviceLocator.ResolveType<IConfigurationService>();
 
                 foreach (var configurationValue in configurationValues)
