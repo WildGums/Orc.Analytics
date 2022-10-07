@@ -1,15 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextBoxLogListener.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics.Example.Logging
+﻿namespace Orc.Analytics.Example.Logging
 {
     using System;
     using System.Windows.Controls;
-    using Catel;
     using Catel.Logging;
 
     public class TextBoxLogListener : LogListenerBase
@@ -18,7 +10,7 @@ namespace Orc.Analytics.Example.Logging
 
         public TextBoxLogListener(TextBox textBox)
         {
-            Argument.IsNotNull(() => textBox);
+            ArgumentNullException.ThrowIfNull(textBox);
 
             _textBox = textBox;
 
@@ -30,7 +22,7 @@ namespace Orc.Analytics.Example.Logging
             _textBox.Dispatcher.Invoke(new Action(() => _textBox.Clear()));
         }
 
-        protected override void Write(ILog log, string message, LogEvent logEvent, object extraData, LogData logData, DateTime time)
+        protected override void Write(ILog log, string message, LogEvent logEvent, object? extraData, LogData? logData, DateTime time)
         {
             _textBox.Dispatcher.Invoke(new Action(() =>
             {

@@ -1,14 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindowViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics.Example.ViewModels
+﻿namespace Orc.Analytics.Example.ViewModels
 {
-    using System.Threading.Tasks;
-    using Catel;
+    using System;
     using Catel.Logging;
     using Catel.MVVM;
 
@@ -21,21 +13,18 @@ namespace Orc.Analytics.Example.ViewModels
 
         private readonly IAnalyticsService _analyticsService;
 
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
         public MainWindowViewModel(IAnalyticsService analyticsService)
         {
-            Argument.IsNotNull(() => analyticsService);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             _analyticsService = analyticsService;
 
             AccountId = "UA-54670241-1";
         }
-        #endregion
 
-        #region Properties
         /// <summary>
         /// Gets the title of the view model.
         /// </summary>
@@ -46,17 +35,11 @@ namespace Orc.Analytics.Example.ViewModels
         }
 
         public string AccountId { get; set; }
-        #endregion
 
-        #region Commands
 
-        #endregion
-
-        #region Methods
         private void OnAccountIdChanged()
         {
-            _analyticsService.AccountId = AccountId;
+            //_analyticsService.AccountId = AccountId;
         }
-        #endregion
     }
 }

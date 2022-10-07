@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackDetailsViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics.Example.ViewModels
+﻿namespace Orc.Analytics.Example.ViewModels
 {
+    using System;
     using System.Threading.Tasks;
     using Catel;
     using Catel.MVVM;
@@ -20,7 +14,7 @@ namespace Orc.Analytics.Example.ViewModels
 
         public TrackDetailsViewModel(IAnalyticsService analyticsService)
         {
-            Argument.IsNotNull(() => analyticsService);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             _analyticsService = analyticsService;
 
@@ -34,7 +28,6 @@ namespace Orc.Analytics.Example.ViewModels
 
         public string Action { get; set; }
 
-        #region Commands
         public TaskCommand Send { get; private set; }
 
         private bool OnSendCanExecute()
@@ -54,8 +47,7 @@ namespace Orc.Analytics.Example.ViewModels
 
         private async Task OnSendExecuteAsync()
         {
-            await _analyticsService.SendEventAsync(Category, Action);
+            await _analyticsService.QueueEventAsync(Category, Action);
         }
-        #endregion
     }
 }

@@ -5,12 +5,13 @@
         public AnalyticsValue()
         {
             Category = "General";
+            Key = string.Empty;
         }
 
         public string Category { get; set; }
 
         public string Key { get; set; }
 
-        public object Value { get; set; }
+        public object? Value { get; set; }
     }
 }

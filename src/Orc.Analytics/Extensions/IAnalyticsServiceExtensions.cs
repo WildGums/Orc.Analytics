@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAnalyticsService.cs" company="CatenaLogic">
-//   Copyright (c) 2008 - 2014 CatenaLogic. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics
+﻿namespace Orc.Analytics
 {
     using System;
     using System.Threading.Tasks;
@@ -18,18 +11,16 @@ namespace Orc.Analytics
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        public static async Task ExecuteAndTrackAsync(this IAnalyticsService service, Func<Task> func, string category,
+        public static async Task ExecuteAndTrackAsync(this IAnalyticsService analyticsService, Func<Task> func, string category,
             string variable)
         {
-            Argument.IsNotNull("service", service);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             var startTime = DateTime.Now;
 
             await func();
 
-#pragma warning disable 4014
-            service.SendTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
-#pragma warning restore 4014
+            await analyticsService.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
         }
 
         public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IAnalyticsService service, Func<Task<T>> func, string category,
@@ -41,31 +32,29 @@ namespace Orc.Analytics
 
             var result = await func();
 
-#pragma warning disable 4014
-            service.SendTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
-#pragma warning restore 4014
+            await service.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
 
             return result;
         }
 
-        public static Task SendViewModelCreatedAsync(this IAnalyticsService googleAnalytics, string viewModel)
+        public static Task QueueViewModelCreatedAsync(this IAnalyticsService analyticsService, string viewModel)
         {
-            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
-            return googleAnalytics.SendEventAsync("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
+            return analyticsService.QueueEventAsync("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
         }
 
-        public static async Task SendViewModelClosedAsync(this IAnalyticsService googleAnalytics, string viewModel, TimeSpan duration)
+        public static async Task QueueViewModelClosedAsync(this IAnalyticsService analyticsService, string viewModel, TimeSpan duration)
         {
-            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
-            await googleAnalytics.SendEventAsync("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
-            await googleAnalytics.SendTimingAsync(duration, "ViewModels", viewModel);
+            await analyticsService.QueueEventAsync("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
+            await analyticsService.QueueTimingAsync(duration, "ViewModels", viewModel);
         }
 
-        public static Task SendCommandAsync(this IAnalyticsService googleAnalytics, string viewModelName, string commandName)
+        public static Task QueueCommandAsync(this IAnalyticsService analyticsService, string viewModelName, string commandName)
         {
-            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             var eventName = viewModelName;
             if (!string.IsNullOrEmpty(eventName))
@@ -79,12 +68,12 @@ namespace Orc.Analytics
 
             eventName += commandName;
 
-            return googleAnalytics.SendEventAsync("Commands", eventName);
+            return analyticsService.QueueEventAsync("Commands", eventName);
         }
 
-        public static async Task SendAnalyticsValuesAsync(this IAnalyticsService googleAnalytics, params AnalyticsValue[] values)
+        public static async Task QueueAnalyticsValuesAsync(this IAnalyticsService analyticsService, params AnalyticsValue[] values)
         {
-            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             try
             {
@@ -97,7 +86,7 @@ namespace Orc.Analytics
                         valueAsString = valueAsString.ToLower();
                     }
 
-                    await googleAnalytics.SendEventAsync(analyticsValue.Category, analyticsValue.Key, valueAsString);
+                    await analyticsService.QueueEventAsync(analyticsValue.Category, analyticsValue.Key, valueAsString);
                 }
             }
             catch (Exception ex)
@@ -106,23 +95,23 @@ namespace Orc.Analytics
             }
         }
 
-        public static async Task SendConfigurationValuesAsync(this IAnalyticsService googleAnalytics, params ConfigurationAnalyticsValue[] configurationValues)
+        public static async Task QueueConfigurationValuesAsync(this IAnalyticsService analyticsService, params ConfigurationAnalyticsValue[] configurationValues)
         {
-            Argument.IsNotNull("googleAnalytics", googleAnalytics);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             try
             {
 #pragma warning disable IDISP001 // Dispose created
-                var serviceLocator = googleAnalytics.GetServiceLocator();
+                var serviceLocator = analyticsService.GetServiceLocator();
 #pragma warning restore IDISP001 // Dispose created
-                var configurationService = serviceLocator.ResolveType<IConfigurationService>();
+                var configurationService = serviceLocator.ResolveRequiredType<IConfigurationService>();
 
                 foreach (var configurationValue in configurationValues)
                 {
-                    configurationValue.Value = configurationService.GetValue(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
+                    configurationValue.Value = await configurationService.GetValueAsync(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
                 }
 
-                await googleAnalytics.SendAnalyticsValuesAsync(configurationValues);
+                await analyticsService.QueueAnalyticsValuesAsync(configurationValues);
             }
             catch (Exception ex)
             {

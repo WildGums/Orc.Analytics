@@ -1,55 +1,44 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnalyticsAuditor.cs" company="CatenaLogic">
-//   Copyright (c) 2008 - 2014 CatenaLogic. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics.Auditors
+﻿namespace Orc.Analytics.Auditors
 {
     using System;
     using System.Collections.Generic;
-    using Catel;
     using Catel.MVVM;
     using Catel.MVVM.Auditing;
+    using Catel.Reflection;
 
     public class AnalyticsAuditor : AuditorBase
     {
-        #region Fields
         private readonly IAnalyticsService _analyticsService;
 
         private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new Dictionary<int, DateTime>();
-        #endregion
 
-        #region Constructors
         public AnalyticsAuditor(IAnalyticsService analyticsService)
         {
-            Argument.IsNotNull(() => analyticsService);
+            ArgumentNullException.ThrowIfNull(analyticsService);
 
             _analyticsService = analyticsService;
         }
-        #endregion
 
-        #region Methods
-        public override void OnCommandExecuted(IViewModel viewModel, string commandName, ICatelCommand command, object commandParameter)
+        public override async void OnCommandExecuted(IViewModel? viewModel, string? commandName, ICatelCommand command, object? commandParameter)
         {
             base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
 
             var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
+            var finalCommandName = commandName ?? string.Empty;
 
-            _analyticsService.SendCommandAsync(viewModelName, commandName);
+            await _analyticsService.QueueCommandAsync(viewModelName, finalCommandName);
         }
 
-        public override void OnViewModelCreated(IViewModel viewModel)
+        public override async void OnViewModelCreated(IViewModel viewModel)
         {
             base.OnViewModelCreated(viewModel);
 
             _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
 
-            _analyticsService.SendViewModelCreatedAsync(viewModel.GetType().FullName);
+            await _analyticsService.QueueViewModelCreatedAsync(viewModel.GetType().GetSafeFullName());
         }
 
-        public override void OnViewModelClosed(IViewModel viewModel)
+        public override async void OnViewModelClosed(IViewModel viewModel)
         {
             base.OnViewModelClosed(viewModel);
 
@@ -57,11 +46,8 @@ namespace Orc.Analytics.Auditors
             {
                 var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
 
-#pragma warning disable 4014
-                _analyticsService.SendViewModelClosedAsync(viewModel.GetType().FullName, lifetime);
-#pragma warning restore 4014
+                await _analyticsService.QueueViewModelClosedAsync(viewModel.GetType().GetSafeFullName(), lifetime);
             }
         }
-        #endregion
     }
 }

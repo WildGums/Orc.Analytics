@@ -1,25 +1,19 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FrameworkElementExtensions.cs" company="CatenaLogic">
-//   Copyright (c) 2008 - 2014 CatenaLogic. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Orc.Analytics
+﻿namespace Orc.Analytics
 {
     using System.Windows;
-    using Catel;
     using Catel.IoC;
     using System.Threading.Tasks;
+    using System;
 
     public static partial class FrameworkElementExtensions
     {
-        private static readonly IAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveType<IAnalyticsService>();
+        private static readonly IAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveRequiredType<IAnalyticsService>();
 
         public static Task TrackViewForAnalyticsAsync(this FrameworkElement frameworkElement)
         {
-            Argument.IsNotNull("frameworkElement", frameworkElement);
+            ArgumentNullException.ThrowIfNull(frameworkElement);
 
-            return AnalyticsService.SendViewAsync(frameworkElement.GetType().Name);
+            return AnalyticsService.QueueViewAsync(frameworkElement.GetType().Name);
         }
     }
 }

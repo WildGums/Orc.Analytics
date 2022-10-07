@@ -3,14 +3,10 @@
     using System.Globalization;
     using System.Windows;
     using Catel;
-    using Catel.ApiCop;
-    using Catel.ApiCop.Listeners;
     using Catel.IoC;
     using Catel.Logging;
     using Catel.MVVM;
-    using Catel.Reflection;
     using Catel.Services;
-    using Catel.Windows;
     using Orchestra;
 
     /// <summary>
@@ -28,7 +24,7 @@
 
             this.ApplyTheme();
 
-            var languageService = ServiceLocator.Default.ResolveType<ILanguageService>();
+            var languageService = ServiceLocator.Default.ResolveRequiredType<ILanguageService>();
 
             // Note: it's best to use .CurrentUICulture in actual apps since it will use the preferred language
             // of the user. But in order to demo multilingual features for devs (who mostly have en-US as .CurrentUICulture),
@@ -64,21 +60,12 @@
 
             Log.Info("Registering application-wide commands");
 
-            var commandManager = serviceLocator.ResolveType<ICommandManager>();
+            var commandManager = serviceLocator.ResolveRequiredType<ICommandManager>();
             commandManager.CreateCommandWithGesture(typeof(TestCommands), "AppWideTest");
 
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            // Get advisory report in console
-            ApiCopManager.AddListener(new ConsoleApiCopListener());
-            ApiCopManager.WriteResults();
-
-            base.OnExit(e);
         }
     }
 }
