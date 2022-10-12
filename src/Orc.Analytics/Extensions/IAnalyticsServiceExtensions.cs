@@ -108,7 +108,7 @@
 
                 foreach (var configurationValue in configurationValues)
                 {
-                    configurationValue.Value = await configurationService.GetValueAsync(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
+                    configurationValue.Value = configurationService.GetValue(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
                 }
 
                 await analyticsService.QueueAnalyticsValuesAsync(configurationValues);
