@@ -1,122 +1,119 @@
-﻿namespace Orc.Analytics
+﻿namespace Orc.Analytics;
+
+using System;
+using System.Threading.Tasks;
+using Catel;
+using Catel.Configuration;
+using Catel.IoC;
+using Catel.Logging;
+
+public static class IAnalyticsServiceExtensions
 {
-    using System;
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.Configuration;
-    using Catel.IoC;
-    using Catel.Logging;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-    public static class IAnalyticsServiceExtensions
+    public static async Task ExecuteAndTrackAsync(this IAnalyticsService analyticsService, Func<Task> func, string category,
+        string variable)
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        public static async Task ExecuteAndTrackAsync(this IAnalyticsService analyticsService, Func<Task> func, string category,
-            string variable)
+        var startTime = DateTime.Now;
+
+        await func();
+
+        await analyticsService.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
+    }
+
+    public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IAnalyticsService service, Func<Task<T>> func, string category,
+        string variable)
+    {
+        ArgumentNullException.ThrowIfNull(service);
+
+        var startTime = DateTime.Now;
+
+        var result = await func();
+
+        await service.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
+
+        return result;
+    }
+
+    public static Task QueueViewModelCreatedAsync(this IAnalyticsService analyticsService, string viewModel)
+    {
+        ArgumentNullException.ThrowIfNull(analyticsService);
+
+        return analyticsService.QueueEventAsync("ViewModels", $"{viewModel}.Created", viewModel);
+    }
+
+    public static async Task QueueViewModelClosedAsync(this IAnalyticsService analyticsService, string viewModel, TimeSpan duration)
+    {
+        ArgumentNullException.ThrowIfNull(analyticsService);
+
+        await analyticsService.QueueEventAsync("ViewModels", $"{viewModel}.Closed", viewModel);
+        await analyticsService.QueueTimingAsync(duration, "ViewModels", viewModel);
+    }
+
+    public static Task QueueCommandAsync(this IAnalyticsService analyticsService, string viewModelName, string commandName)
+    {
+        ArgumentNullException.ThrowIfNull(analyticsService);
+
+        var eventName = viewModelName;
+        if (!string.IsNullOrEmpty(eventName))
         {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            var startTime = DateTime.Now;
-
-            await func();
-
-            await analyticsService.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
+            eventName += ".";
+        }
+        else
+        {
+            eventName = string.Empty;
         }
 
-        public static async Task<T> ExecuteAndTrackWithResultAsync<T>(this IAnalyticsService service, Func<Task<T>> func, string category,
-            string variable)
+        eventName += commandName;
+
+        return analyticsService.QueueEventAsync("Commands", eventName);
+    }
+
+    public static async Task QueueAnalyticsValuesAsync(this IAnalyticsService analyticsService, params AnalyticsValue[] values)
+    {
+        ArgumentNullException.ThrowIfNull(analyticsService);
+
+        try
         {
-            Argument.IsNotNull("service", service);
-
-            var startTime = DateTime.Now;
-
-            var result = await func();
-
-            await service.QueueTimingAsync(DateTime.Now.Subtract(startTime), category, variable);
-
-            return result;
-        }
-
-        public static Task QueueViewModelCreatedAsync(this IAnalyticsService analyticsService, string viewModel)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            return analyticsService.QueueEventAsync("ViewModels", string.Format("{0}.Created", viewModel), viewModel);
-        }
-
-        public static async Task QueueViewModelClosedAsync(this IAnalyticsService analyticsService, string viewModel, TimeSpan duration)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            await analyticsService.QueueEventAsync("ViewModels", string.Format("{0}.Closed", viewModel), viewModel);
-            await analyticsService.QueueTimingAsync(duration, "ViewModels", viewModel);
-        }
-
-        public static Task QueueCommandAsync(this IAnalyticsService analyticsService, string viewModelName, string commandName)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            var eventName = viewModelName;
-            if (!string.IsNullOrEmpty(eventName))
+            foreach (var analyticsValue in values)
             {
-                eventName += ".";
-            }
-            else
-            {
-                eventName = string.Empty;
-            }
+                var valueAsString = ObjectToStringHelper.ToString(analyticsValue.Value);
 
-            eventName += commandName;
-
-            return analyticsService.QueueEventAsync("Commands", eventName);
-        }
-
-        public static async Task QueueAnalyticsValuesAsync(this IAnalyticsService analyticsService, params AnalyticsValue[] values)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            try
-            {
-                foreach (var analyticsValue in values)
+                if (analyticsValue.Value is bool)
                 {
-                    var valueAsString = ObjectToStringHelper.ToString(analyticsValue.Value);
-
-                    if (analyticsValue.Value is bool)
-                    {
-                        valueAsString = valueAsString.ToLower();
-                    }
-
-                    await analyticsService.QueueEventAsync(analyticsValue.Category, analyticsValue.Key, valueAsString);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to submit analytics values to analytics");
-            }
-        }
-
-        public static async Task QueueConfigurationValuesAsync(this IAnalyticsService analyticsService, params ConfigurationAnalyticsValue[] configurationValues)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            try
-            {
-#pragma warning disable IDISP001 // Dispose created
-                var serviceLocator = analyticsService.GetServiceLocator();
-#pragma warning restore IDISP001 // Dispose created
-                var configurationService = serviceLocator.ResolveRequiredType<IConfigurationService>();
-
-                foreach (var configurationValue in configurationValues)
-                {
-                    configurationValue.Value = configurationService.GetValue(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
+                    valueAsString = valueAsString.ToLower();
                 }
 
-                await analyticsService.QueueAnalyticsValuesAsync(configurationValues);
+                await analyticsService.QueueEventAsync(analyticsValue.Category, analyticsValue.Key, valueAsString);
             }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to submit analytics values to analytics");
+        }
+    }
+
+    public static async Task QueueConfigurationValuesAsync(this IAnalyticsService analyticsService, params ConfigurationAnalyticsValue[] configurationValues)
+    {
+        ArgumentNullException.ThrowIfNull(analyticsService);
+
+        try
+        {
+            var serviceLocator = analyticsService.GetServiceLocator();
+            var configurationService = serviceLocator.ResolveRequiredType<IConfigurationService>();
+
+            foreach (var configurationValue in configurationValues)
             {
-                Log.Error(ex, "Failed to submit configuration values to analytics");
+                configurationValue.Value = configurationService.GetValue(configurationValue.Container, configurationValue.Key, configurationValue.DefaultValue);
             }
+
+            await analyticsService.QueueAnalyticsValuesAsync(configurationValues);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to submit configuration values to analytics");
         }
     }
 }

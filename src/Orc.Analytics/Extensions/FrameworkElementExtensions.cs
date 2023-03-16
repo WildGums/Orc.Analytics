@@ -1,19 +1,18 @@
-﻿namespace Orc.Analytics
+﻿namespace Orc.Analytics;
+
+using System.Windows;
+using Catel.IoC;
+using System.Threading.Tasks;
+using System;
+
+public static partial class FrameworkElementExtensions
 {
-    using System.Windows;
-    using Catel.IoC;
-    using System.Threading.Tasks;
-    using System;
+    private static readonly IAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveRequiredType<IAnalyticsService>();
 
-    public static partial class FrameworkElementExtensions
+    public static Task TrackViewForAnalyticsAsync(this FrameworkElement frameworkElement)
     {
-        private static readonly IAnalyticsService AnalyticsService = ServiceLocator.Default.ResolveRequiredType<IAnalyticsService>();
+        ArgumentNullException.ThrowIfNull(frameworkElement);
 
-        public static Task TrackViewForAnalyticsAsync(this FrameworkElement frameworkElement)
-        {
-            ArgumentNullException.ThrowIfNull(frameworkElement);
-
-            return AnalyticsService.QueueViewAsync(frameworkElement.GetType().Name);
-        }
+        return AnalyticsService.QueueViewAsync(frameworkElement.GetType().Name);
     }
 }
