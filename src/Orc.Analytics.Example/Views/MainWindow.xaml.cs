@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Analytics.Example.Views
+﻿namespace Orc.Analytics.Example.Views
 {
     using Catel.Logging;
     using Catel.Windows;
@@ -16,11 +9,8 @@ namespace Orc.Analytics.Example.Views
     /// </summary>
     public partial class MainWindow
     {
-        #region Constants
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
@@ -33,6 +23,5 @@ namespace Orc.Analytics.Example.Views
 
             Log.Info("Welcome to the example of Orc.Analytics. Use any of the buttons above to control the analytics. Log messages will appear here");
         }
-        #endregion
     }
 }
