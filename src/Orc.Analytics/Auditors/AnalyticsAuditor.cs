@@ -1,53 +1,54 @@
-﻿namespace Orc.Analytics.Auditors
+﻿namespace Orc.Analytics.Auditors;
+
+using System;
+using System.Collections.Generic;
+using Catel.MVVM;
+using Catel.MVVM.Auditing;
+using Catel.Reflection;
+
+public class AnalyticsAuditor : AuditorBase
 {
-    using System;
-    using System.Collections.Generic;
-    using Catel.MVVM;
-    using Catel.MVVM.Auditing;
-    using Catel.Reflection;
+    private readonly IAnalyticsService _analyticsService;
 
-    public class AnalyticsAuditor : AuditorBase
+    private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new();
+
+    public AnalyticsAuditor(IAnalyticsService analyticsService)
     {
-        private readonly IAnalyticsService _analyticsService;
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new Dictionary<int, DateTime>();
+        _analyticsService = analyticsService;
+    }
 
-        public AnalyticsAuditor(IAnalyticsService analyticsService)
+    public override async void OnCommandExecuted(IViewModel? viewModel, string? commandName, ICatelCommand command, object? commandParameter)
+    {
+        base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
+
+        var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
+        var finalCommandName = commandName ?? string.Empty;
+
+        await _analyticsService.QueueCommandAsync(viewModelName, finalCommandName);
+    }
+
+    public override async void OnViewModelCreated(IViewModel viewModel)
+    {
+        base.OnViewModelCreated(viewModel);
+
+        _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
+
+        await _analyticsService.QueueViewModelCreatedAsync(viewModel.GetType().GetSafeFullName());
+    }
+
+    public override async void OnViewModelClosed(IViewModel viewModel)
+    {
+        base.OnViewModelClosed(viewModel);
+
+        if (!_viewModelCreationTimes.ContainsKey(viewModel.UniqueIdentifier))
         {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            _analyticsService = analyticsService;
+            return;
         }
 
-        public override async void OnCommandExecuted(IViewModel? viewModel, string? commandName, ICatelCommand command, object? commandParameter)
-        {
-            base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
+        var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
 
-            var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
-            var finalCommandName = commandName ?? string.Empty;
-
-            await _analyticsService.QueueCommandAsync(viewModelName, finalCommandName);
-        }
-
-        public override async void OnViewModelCreated(IViewModel viewModel)
-        {
-            base.OnViewModelCreated(viewModel);
-
-            _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
-
-            await _analyticsService.QueueViewModelCreatedAsync(viewModel.GetType().GetSafeFullName());
-        }
-
-        public override async void OnViewModelClosed(IViewModel viewModel)
-        {
-            base.OnViewModelClosed(viewModel);
-
-            if (_viewModelCreationTimes.ContainsKey(viewModel.UniqueIdentifier))
-            {
-                var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
-
-                await _analyticsService.QueueViewModelClosedAsync(viewModel.GetType().GetSafeFullName(), lifetime);
-            }
-        }
+        await _analyticsService.QueueViewModelClosedAsync(viewModel.GetType().GetSafeFullName(), lifetime);
     }
 }

@@ -1,22 +1,21 @@
-﻿namespace Orc.Analytics
+﻿namespace Orc.Analytics;
+
+using System;
+using Catel.Configuration;
+
+public class ConfigurationAnalyticsValue : AnalyticsValue
 {
-    using System;
-    using Catel.Configuration;
-
-    public class ConfigurationAnalyticsValue : AnalyticsValue
+    public ConfigurationAnalyticsValue(ConfigurationContainer container, string key, object? defaultValue)
     {
-        public ConfigurationAnalyticsValue(ConfigurationContainer container, string key, object? defaultValue)
-        {
-            ArgumentNullException.ThrowIfNull(container);
+        ArgumentNullException.ThrowIfNull(container);
 
-            Category = "Configuration";
-            Container = container;
-            Key = key;
-            DefaultValue = defaultValue;
-        }
-
-        public ConfigurationContainer Container { get; set; }
-
-        public object? DefaultValue { get; set; }
+        Category = "Configuration";
+        Container = container;
+        Key = key;
+        DefaultValue = defaultValue;
     }
+
+    public ConfigurationContainer Container { get; set; }
+
+    public object? DefaultValue { get; set; }
 }

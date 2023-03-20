@@ -1,45 +1,44 @@
-﻿namespace Orc.Analytics.Example.ViewModels
+﻿namespace Orc.Analytics.Example.ViewModels;
+
+using System;
+using Catel.Logging;
+using Catel.MVVM;
+
+/// <summary>
+/// MainWindow view model.
+/// </summary>
+public class MainWindowViewModel : ViewModelBase
 {
-    using System;
-    using Catel.Logging;
-    using Catel.MVVM;
+    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
+    private readonly IAnalyticsService _analyticsService;
 
     /// <summary>
-    /// MainWindow view model.
+    /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
     /// </summary>
-    public class MainWindowViewModel : ViewModelBase
+    public MainWindowViewModel(IAnalyticsService analyticsService)
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        private readonly IAnalyticsService _analyticsService;
+        _analyticsService = analyticsService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
-        /// </summary>
-        public MainWindowViewModel(IAnalyticsService analyticsService)
-        {
-            ArgumentNullException.ThrowIfNull(analyticsService);
+        AccountId = "UA-54670241-1";
+    }
 
-            _analyticsService = analyticsService;
+    /// <summary>
+    /// Gets the title of the view model.
+    /// </summary>
+    /// <value>The title.</value>
+    public override string Title
+    {
+        get { return "Orc.Analytics.Example"; }
+    }
 
-            AccountId = "UA-54670241-1";
-        }
-
-        /// <summary>
-        /// Gets the title of the view model.
-        /// </summary>
-        /// <value>The title.</value>
-        public override string Title
-        {
-            get { return "Orc.Analytics.Example"; }
-        }
-
-        public string AccountId { get; set; }
+    public string AccountId { get; set; }
 
 
-        private void OnAccountIdChanged()
-        {
-            //_analyticsService.AccountId = AccountId;
-        }
+    private void OnAccountIdChanged()
+    {
+        //_analyticsService.AccountId = AccountId;
     }
 }

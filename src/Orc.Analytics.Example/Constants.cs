@@ -1,7 +1,6 @@
-﻿namespace Orc.Analytics.Example
+﻿namespace Orc.Analytics.Example;
+
+public static class TestCommands
 {
-    public static class TestCommands
-    {
-        public const string AppWideTest = "TestCommands.AppWideTest";
-    }
+    public const string AppWideTest = "TestCommands.AppWideTest";
 }
