@@ -1,53 +1,52 @@
-﻿namespace Orc.Analytics.Example.ViewModels
+﻿namespace Orc.Analytics.Example.ViewModels;
+
+using System;
+using System.Threading.Tasks;
+using Catel;
+using Catel.MVVM;
+
+/// <summary>
+/// Class TrackDetailsViewModel.
+/// </summary>
+public class TrackDetailsViewModel : ViewModelBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.MVVM;
+    private readonly IAnalyticsService _analyticsService;
 
-    /// <summary>
-    /// Class TrackDetailsViewModel.
-    /// </summary>
-    public class TrackDetailsViewModel : ViewModelBase
+    public TrackDetailsViewModel(IAnalyticsService analyticsService)
     {
-        private readonly IAnalyticsService _analyticsService;
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        public TrackDetailsViewModel(IAnalyticsService analyticsService)
+        _analyticsService = analyticsService;
+
+        Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
+
+        Category = "category";
+        Action = "action";
+    }
+
+    public string Category { get; set; }
+
+    public string Action { get; set; }
+
+    public TaskCommand Send { get; private set; }
+
+    private bool OnSendCanExecute()
+    {
+        if (string.IsNullOrWhiteSpace(Category))
         {
-            ArgumentNullException.ThrowIfNull(analyticsService);
-
-            _analyticsService = analyticsService;
-
-            Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
-
-            Category = "category";
-            Action = "action";
+            return false;
         }
 
-        public string Category { get; set; }
-
-        public string Action { get; set; }
-
-        public TaskCommand Send { get; private set; }
-
-        private bool OnSendCanExecute()
+        if (string.IsNullOrWhiteSpace(Action))
         {
-            if (string.IsNullOrWhiteSpace(Category))
-            {
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Action))
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
-        private async Task OnSendExecuteAsync()
-        {
-            await _analyticsService.QueueEventAsync(Category, Action);
-        }
+        return true;
+    }
+
+    private async Task OnSendExecuteAsync()
+    {
+        await _analyticsService.QueueEventAsync(Category, Action);
     }
 }

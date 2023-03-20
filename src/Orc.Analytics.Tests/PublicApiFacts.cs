@@ -1,31 +1,30 @@
-﻿namespace Orc.Analytics.Tests
+﻿namespace Orc.Analytics.Tests;
+
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Auditors;
+using NUnit.Framework;
+using PublicApiGenerator;
+using VerifyNUnit;
+
+[TestFixture]
+public class PublicApiFacts
 {
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
-    using Auditors;
-    using NUnit.Framework;
-    using PublicApiGenerator;
-    using VerifyNUnit;
-
-    [TestFixture]
-    public class PublicApiFacts
+    [Test, MethodImpl(MethodImplOptions.NoInlining)]
+    public async Task Orc_Analytics_HasNoBreakingChanges_Async()
     {
-        [Test, MethodImpl(MethodImplOptions.NoInlining)]
-        public async Task Orc_Analytics_HasNoBreakingChanges_Async()
-        {
-            var assembly = typeof(AnalyticsAuditor).Assembly;
+        var assembly = typeof(AnalyticsAuditor).Assembly;
 
-            await PublicApiApprover.ApprovePublicApiAsync(assembly);
-        }
+        await PublicApiApprover.ApprovePublicApiAsync(assembly);
+    }
 
-        internal static class PublicApiApprover
+    internal static class PublicApiApprover
+    {
+        public static async Task ApprovePublicApiAsync(Assembly assembly)
         {
-            public static async Task ApprovePublicApiAsync(Assembly assembly)
-            {
-                var publicApi = ApiGenerator.GeneratePublicApi(assembly, new ApiGeneratorOptions());
-                await Verifier.Verify(publicApi);
-            }
+            var publicApi = ApiGenerator.GeneratePublicApi(assembly, new ApiGeneratorOptions());
+            await Verifier.Verify(publicApi);
         }
     }
 }
