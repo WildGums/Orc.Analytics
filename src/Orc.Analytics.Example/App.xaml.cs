@@ -8,6 +8,7 @@
     using Catel.MVVM;
     using Catel.Services;
     using Orchestra;
+    using Theming;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -35,6 +36,8 @@
             Log.Info("Starting application");
 
             var serviceLocator = ServiceLocator.Default;
+
+            ThemeManager.Current.SynchronizeTheme();
 
             // To force the loading of all assemblies at startup, uncomment the lines below:
 
