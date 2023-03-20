@@ -101,7 +101,9 @@ public static class IAnalyticsServiceExtensions
 
         try
         {
+#pragma warning disable IDISP001 // Dispose created
             var serviceLocator = analyticsService.GetServiceLocator();
+#pragma warning restore IDISP001 // Dispose created
             var configurationService = serviceLocator.ResolveRequiredType<IConfigurationService>();
 
             foreach (var configurationValue in configurationValues)
