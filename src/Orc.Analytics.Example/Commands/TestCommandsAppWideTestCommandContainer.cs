@@ -13,7 +13,7 @@ public class TestCommandsAppWideTestCommandContainer : CommandContainerBase
     {
     }
 
-    protected override async Task ExecuteAsync(object? parameter)
+    public override async Task ExecuteAsync(object? parameter)
     {
         Log.Info("Executing application-wide command");
     }
