@@ -36,3 +36,4 @@ TestProjects.Add(string.Format("{0}.Tests", GetBuildServerVariable("SolutionName
 // script will take care of the rest of the magic
 
 #l "./deployment/cake/tasks.cake"
+
