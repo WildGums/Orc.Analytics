@@ -15,9 +15,9 @@ public static class ModuleInitializer
         var serviceLocator = ServiceLocator.Default;
 
         serviceLocator.RegisterType<IUserIdService, UserIdService>();
-        serviceLocator.RegisterType<IAnalyticsService, GoogleAnalyticsService>();
+        serviceLocator.RegisterType<IAnalyticsService, EmptyAnalyticsService>();
 
-        var languageService = serviceLocator.ResolveType<ILanguageService>();
+        var languageService = serviceLocator.ResolveRequiredType<ILanguageService>();
         languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.Analytics", "Orc.Analytics.Properties", "Resources"));
     }
 }

@@ -1,61 +1,52 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackDetailsViewModel.cs" company="WildGums">
-//   Copyright (c) 2008 - 2014 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Analytics.Example.ViewModels;
 
+using System;
+using System.Threading.Tasks;
+using Catel;
+using Catel.MVVM;
 
-namespace Orc.Analytics.Example.ViewModels
+/// <summary>
+/// Class TrackDetailsViewModel.
+/// </summary>
+public class TrackDetailsViewModel : ViewModelBase
 {
-    using System.Threading.Tasks;
-    using Catel;
-    using Catel.MVVM;
+    private readonly IAnalyticsService _analyticsService;
 
-    /// <summary>
-    /// Class TrackDetailsViewModel.
-    /// </summary>
-    public class TrackDetailsViewModel : ViewModelBase
+    public TrackDetailsViewModel(IAnalyticsService analyticsService)
     {
-        private readonly IAnalyticsService _analyticsService;
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        public TrackDetailsViewModel(IAnalyticsService analyticsService)
+        _analyticsService = analyticsService;
+
+        Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
+
+        Category = "category";
+        Action = "action";
+    }
+
+    public string Category { get; set; }
+
+    public string Action { get; set; }
+
+    public TaskCommand Send { get; private set; }
+
+    private bool OnSendCanExecute()
+    {
+        if (string.IsNullOrWhiteSpace(Category))
         {
-            Argument.IsNotNull(() => analyticsService);
-
-            _analyticsService = analyticsService;
-
-            Send = new TaskCommand(OnSendExecuteAsync, OnSendCanExecute);
-
-            Category = "category";
-            Action = "action";
+            return false;
         }
 
-        public string Category { get; set; }
-
-        public string Action { get; set; }
-
-        #region Commands
-        public TaskCommand Send { get; private set; }
-
-        private bool OnSendCanExecute()
+        if (string.IsNullOrWhiteSpace(Action))
         {
-            if (string.IsNullOrWhiteSpace(Category))
-            {
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Action))
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
-        private async Task OnSendExecuteAsync()
-        {
-            await _analyticsService.SendEventAsync(Category, Action);
-        }
-        #endregion
+        return true;
+    }
+
+    private async Task OnSendExecuteAsync()
+    {
+        await _analyticsService.QueueEventAsync(Category, Action);
     }
 }

@@ -1,67 +1,54 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnalyticsAuditor.cs" company="CatenaLogic">
-//   Copyright (c) 2008 - 2014 CatenaLogic. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Analytics.Auditors;
 
+using System;
+using System.Collections.Generic;
+using Catel.MVVM;
+using Catel.MVVM.Auditing;
+using Catel.Reflection;
 
-namespace Orc.Analytics.Auditors
+public class AnalyticsAuditor : AuditorBase
 {
-    using System;
-    using System.Collections.Generic;
-    using Catel;
-    using Catel.MVVM;
-    using Catel.MVVM.Auditing;
+    private readonly IAnalyticsService _analyticsService;
 
-    public class AnalyticsAuditor : AuditorBase
+    private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new();
+
+    public AnalyticsAuditor(IAnalyticsService analyticsService)
     {
-        #region Fields
-        private readonly IAnalyticsService _analyticsService;
+        ArgumentNullException.ThrowIfNull(analyticsService);
 
-        private readonly Dictionary<int, DateTime> _viewModelCreationTimes = new Dictionary<int, DateTime>();
-        #endregion
+        _analyticsService = analyticsService;
+    }
 
-        #region Constructors
-        public AnalyticsAuditor(IAnalyticsService analyticsService)
+    public override async void OnCommandExecuted(IViewModel? viewModel, string? commandName, ICatelCommand command, object? commandParameter)
+    {
+        base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
+
+        var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
+        var finalCommandName = commandName ?? string.Empty;
+
+        await _analyticsService.QueueCommandAsync(viewModelName, finalCommandName);
+    }
+
+    public override async void OnViewModelCreated(IViewModel viewModel)
+    {
+        base.OnViewModelCreated(viewModel);
+
+        _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
+
+        await _analyticsService.QueueViewModelCreatedAsync(viewModel.GetType().GetSafeFullName());
+    }
+
+    public override async void OnViewModelClosed(IViewModel viewModel)
+    {
+        base.OnViewModelClosed(viewModel);
+
+        if (!_viewModelCreationTimes.ContainsKey(viewModel.UniqueIdentifier))
         {
-            Argument.IsNotNull(() => analyticsService);
-
-            _analyticsService = analyticsService;
-        }
-        #endregion
-
-        #region Methods
-        public override void OnCommandExecuted(IViewModel viewModel, string commandName, ICatelCommand command, object commandParameter)
-        {
-            base.OnCommandExecuted(viewModel, commandName, command, commandParameter);
-
-            var viewModelName = viewModel is not null ? viewModel.GetType().Name : string.Empty;
-
-            _analyticsService.SendCommandAsync(viewModelName, commandName);
+            return;
         }
 
-        public override void OnViewModelCreated(IViewModel viewModel)
-        {
-            base.OnViewModelCreated(viewModel);
+        var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
 
-            _viewModelCreationTimes[viewModel.UniqueIdentifier] = DateTime.Now;
-
-            _analyticsService.SendViewModelCreatedAsync(viewModel.GetType().FullName);
-        }
-
-        public override void OnViewModelClosed(IViewModel viewModel)
-        {
-            base.OnViewModelClosed(viewModel);
-
-            if (_viewModelCreationTimes.ContainsKey(viewModel.UniqueIdentifier))
-            {
-                var lifetime = DateTime.Now.Subtract(_viewModelCreationTimes[viewModel.UniqueIdentifier]);
-
-#pragma warning disable 4014
-                _analyticsService.SendViewModelClosedAsync(viewModel.GetType().FullName, lifetime);
-#pragma warning restore 4014
-            }
-        }
-        #endregion
+        await _analyticsService.QueueViewModelClosedAsync(viewModel.GetType().GetSafeFullName(), lifetime);
     }
 }

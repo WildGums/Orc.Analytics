@@ -3,9 +3,6 @@
   <ModuleInit />
   <Costura DisableCleanup="true">
     <IncludeAssemblies>
-      GoogleAnalytics.Core
-      System.Net.Http.Extensions
-      System.Net.Http.Primitives
     </IncludeAssemblies>
   </Costura>
   <Catel />
