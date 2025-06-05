@@ -192,11 +192,52 @@ Task("Clean")
         return;
     }
 
+    // Note: we benchmarked and reading all the csproj is faster than failing on a non-supported platform
+
     var platforms = new Dictionary<string, PlatformTarget>();
-    platforms["AnyCPU"] = PlatformTarget.MSIL;
-    platforms["x86"] = PlatformTarget.x86;
-    platforms["x64"] = PlatformTarget.x64;
-    platforms["arm"] = PlatformTarget.ARM;
+    // platforms["AnyCPU"] = PlatformTarget.MSIL;
+    // platforms["x86"] = PlatformTarget.x86;
+    // platforms["x64"] = PlatformTarget.x64;
+    // platforms["arm"] = PlatformTarget.ARM;
+    // platforms["arm64"] = PlatformTarget.ARM64;
+
+    foreach (var project in buildContext.AllProjects)
+    {
+        var projectPlatformTargets = GetPlatformTargets(buildContext, project);
+
+        foreach (var platformTarget in projectPlatformTargets)
+        {
+            switch (platformTarget.ToLower())
+            {
+                case "anycpu":
+                    platforms[platformTarget] = PlatformTarget.MSIL;
+                    break;
+
+                case "x86":
+                    platforms[platformTarget] = PlatformTarget.x86;
+                    break;
+
+                case "x64":
+                    platforms[platformTarget] = PlatformTarget.x64;
+                    break;
+
+                case "arm":
+                    platforms[platformTarget] = PlatformTarget.ARM;
+                    break;
+
+                case "arm64":
+                    platforms[platformTarget] = PlatformTarget.ARM64;
+                    break;
+
+                case "win32":
+                    platforms[platformTarget] = PlatformTarget.Win32;
+                    break;
+
+                default:
+                    throw new Exception($"Unknown platform target '{platformTarget}' for project '{project}'");
+            }
+        }
+    }
 
     foreach (var platform in platforms)
     {

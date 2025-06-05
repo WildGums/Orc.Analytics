@@ -353,6 +353,46 @@ private static string[] GetTargetFrameworks(BuildContext buildContext, string pr
 
 //-------------------------------------------------------------
 
+private static string[] GetPlatformTargets(BuildContext buildContext, string projectName)
+{
+    var platformTargets = new List<string>();
+
+    var projectFileName = GetProjectFileName(buildContext, projectName);
+    var projectFileContents = System.IO.File.ReadAllText(projectFileName);
+
+    var xmlDocument = XDocument.Parse(projectFileContents);
+    var projectElement = xmlDocument.Root;
+
+    foreach (var propertyGroupElement in projectElement.Elements("PropertyGroup"))
+    {
+        // Step 1: check TargetFramework
+        var platformTargetElement = projectElement.Element("PlatformTarget");
+        if (platformTargetElement != null)
+        {
+            platformTargets.Add(platformTargetElement.Value);
+            break;
+        }
+
+        // Step 2: check TargetFrameworks
+        var platformTargetsElement = propertyGroupElement.Element("PlatformTargets");
+        if (platformTargetsElement != null)
+        {
+            var value = platformTargetsElement.Value;
+            platformTargets.AddRange(value.Split(new [] { ';' }));
+            break;
+        }
+    }
+
+    if (platformTargets.Count == 0)
+    {
+        platformTargets.Add("AnyCPU"); // Default value if nothing is specified
+    }
+
+    return platformTargets.ToArray();
+}
+
+//-------------------------------------------------------------
+
 private static string GetTargetSpecificConfigurationValue(BuildContext buildContext, TargetType targetType, string configurationPrefix, string fallbackValue)
 {
     // Allow per project overrides via "[configurationPrefix][targetType]"
@@ -636,6 +676,8 @@ private static bool ShouldProcessProject(BuildContext buildContext, string proje
 
     return true;
 }
+
+//-------------------------------------------------------------
 
 private static string CreateInlinedProjectXml(BuildContext buildContext, string projectName)
 {
