@@ -7,8 +7,6 @@ public class ConfigurationAnalyticsValue : AnalyticsValue
 {
     public ConfigurationAnalyticsValue(ConfigurationContainer container, string key, object? defaultValue)
     {
-        ArgumentNullException.ThrowIfNull(container);
-
         Category = "Configuration";
         Container = container;
         Key = key;
